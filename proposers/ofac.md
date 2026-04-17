@@ -1,7 +1,3 @@
----
-description: details on ofac filtering by the ultra sound relay.
----
-
 # ofac
 
 we currently track ofac sanctioned addresses in our [ofac-ethereum-addresses](https://github.com/ultrasoundmoney/ofac-ethereum-addresses) repo and update it whenever we notice a new address has been added.

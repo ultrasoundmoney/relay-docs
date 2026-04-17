@@ -4,8 +4,8 @@
 
 1. colocation: Locate your builder close to relays. The ultra sound relay is at OVH Roubaix (RBX), France, OVH Vint Hill (VIN), US, and Latitude Tokyo (TYO).
 2. submission format: Submit your bids using SSZ (not JSON). If at all possible, use block deltas.
-3. submission frequency: Receive an API token and bypass our free-for-all-tier rate limits. Top builders make a few thousand submissions per block landed. See [rate-limits.md](rate-limits.md "mention").
-4. optimistic relaying: This is a massive relay-side optimization where bids are processed optimistically, skipping simulation and saving on simulation latency. Almost all builders (22 of them!) have enabled optimistic relaying with the ultra sound relay—it's hard to compete without. For more detail see: [optimistic-relaying-builder-guide.md](optimistic-relaying-builder-guide.md "mention").
+3. submission frequency: Receive an API token and bypass our free-for-all-tier rate limits. Top builders make a few thousand submissions per block landed. See [rate-limits.md](rate-limits.md).
+4. optimistic relaying: This is a massive relay-side optimization where bids are processed optimistically, skipping simulation and saving on simulation latency. Almost all builders (22 of them!) have enabled optimistic relaying with the ultra sound relay—it's hard to compete without. For more detail see: [optimistic-relaying-builder-guide.md](optimistic-relaying-builder-guide.md).
 5. top bid websocket: To make competitive bids a builder needs to be aware of the auction's bid-to-beat, the top bid. We offer a websocket to efficiently keep track. Read more here: https://github.com/ultrasoundmoney/docs/blob/main/top-bid-websocket.md
 6. use http/2 or `Connection: keep-alive` if using http/1
 
@@ -27,7 +27,7 @@ https://relay-builders-us.ultrasound.money
 https://relay-builders-jp.ultrasound.money
 ```
 
-When submitting to only a subset of these we still do our best to offer your bid to proposers everywhere. Bids submitted to auctions further from the proposer are at a natural latency based disadvantage. For more detail see: [bid-forwarding.md](bid-forwarding.md "mention") .
+When submitting to only a subset of these we still do our best to offer your bid to proposers everywhere. Bids submitted to auctions further from the proposer are at a natural latency based disadvantage. For more detail see: [bid-forwarding.md](bid-forwarding.md) .
 
 ## Bid Sequencing
 
@@ -35,7 +35,7 @@ By default we use `received_at`, i.e. the timestamp at which we received your bi
 
 ## Transaction Filtering
 
-The ultra sound relay supports both transaction filtering and non-filtering proposers. A proposer's filtering preference is communicated in the `/relay/v1/builder/validators` response. Possible values are `none` for no filtering, and `ofac` for filtering according to  [ofac.md](../proposers/ofac.md "mention"). By default, the endpoint only returns proposers with filtering set to `none`. To receive both filtering and non-filtering proposers in the lookahead, add the following query parameter: `?filtering=true`. A block containing filtered addresses in a filtered slot leads to a simulation failure. Below is an example response.
+The ultra sound relay supports both transaction filtering and non-filtering proposers. A proposer's filtering preference is communicated in the `/relay/v1/builder/validators` response. Possible values are `none` for no filtering, and `ofac` for filtering according to  [ofac.md](../proposers/ofac.md). By default, the endpoint only returns proposers with filtering set to `none`. To receive both filtering and non-filtering proposers in the lookahead, add the following query parameter: `?filtering=true`. A block containing filtered addresses in a filtered slot leads to a simulation failure. Below is an example response.
 
 ```json
  {
@@ -58,10 +58,8 @@ The ultra sound relay supports both transaction filtering and non-filtering prop
 
 ## Block Deltas
 
-This feature was first conceived and implemented by Titan relay.&#x20;
-
-To optimize bandwidth utilization we support sending _dehydrated_ payloads for V1 submissions. A builder may submit transactions and blobs only once per slot. Subsequent submissions within the same slot can reference those orders by their hash or proof, and the relay will rehydrate the payload using a local cache.&#x20;
-
+This feature was first conceived and implemented by Titan relay.
+To optimize bandwidth utilization we support sending _dehydrated_ payloads for V1 submissions. A builder may submit transactions and blobs only once per slot. Subsequent submissions within the same slot can reference those orders by their hash or proof, and the relay will rehydrate the payload using a local cache.
 ```rust
 // All types are assuming Fulu fork
 
@@ -102,5 +100,5 @@ The transaction hashes are directly reusing the `transaction` field in the `Exec
 
 ## Bid Adjustments
 
-see: [bid-adjustment.md](bid-adjustment.md "mention")
+see: [bid-adjustment.md](bid-adjustment.md)
 

@@ -1,4 +1,4 @@
-# get\_header endpoint
+# get_header endpoint
 
 Under the [mev-boost protocol](https://docs.flashbots.net/flashbots-mev-boost/introduction) relays run block auctions, block builders submit blocks, and proposers call relays to get the best available header. If the header is returned signed, the corresponding block is proposed to go on-chain.
 

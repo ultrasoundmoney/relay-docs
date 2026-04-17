@@ -1,11 +1,13 @@
----
-description: index for ultra sound documentation.
----
+# ultra sound relay docs
 
-# home
+documentation for the [ultra sound relay](https://relay.ultrasound.money).
 
-if you're an operator of proposers and would like to receive higher paying blocks, check out the [proposers](proposers/ "mention") section.
+- **[proposers](proposers/)** — operating proposers and connecting them to the relay to receive higher-paying blocks.
+- **[builders](builders/)** — submitting blocks: URLs, auction details, optimistic relaying, bid adjustments, websockets, rate limits.
+- **[researchers](researchers/)** — accessing relay data without proposing or building.
 
-if you're a builder looking to submit blocks, check out the [builders](builders/ "mention") section.
+## questions?
 
-for the data curious check out [data-researchers.md](data-researchers.md "mention").
+talk to us on telegram: **[@ultrasoundrelay](https://t.me/ultrasoundrelay)**.
+
+or email [contact@ultrasound.money](mailto:contact@ultrasound.money).

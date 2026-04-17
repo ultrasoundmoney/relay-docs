@@ -20,7 +20,7 @@ To ensure you get the most out of your rate limit we recommend:
 
 1. getting an API token and authenticating your submissions
 2. using SSZ encoding all submissions
-3. considering implementing [dehydrated bids](https://docs.titanrelay.xyz/builders/builder-integration#block-deltas) or [optimistic-v3.md](optimistic-v3.md "mention") which are more efficient and will allow for more requests per slot
+3. considering implementing [dehydrated bids](https://docs.titanrelay.xyz/builders/builder-integration#block-deltas) or [optimistic-v3.md](optimistic-v3.md) which are more efficient and will allow for more requests per slot
 4. ensuring your builder is set up to handle 429 (Too Many Requests) responses gracefully
 5. testing your builder against our `hoodi` relays to avoid unnecessary usage of your bandwidth limit on `mainnet`.
 

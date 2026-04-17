@@ -13,7 +13,7 @@ each provides own docs for how to configure. each will at one point instruct to 
 when selecting a URL to choices are required.
 
 1. which network is the proposer on?
-2. does this proposer require every block offered has been filtered for OFAC transactions. for details on how we handle OFAC see here: [ofac.md](ofac.md "mention").
+2. does this proposer require every block offered has been filtered for OFAC transactions. for details on how we handle OFAC see [ofac.md](ofac.md).
 
 ```bash
 # hoodi - unfiltered
@@ -51,7 +51,7 @@ no, please don't. the URL is treated as a stated preference. a config value if y
 
 <summary>how many relays should i add, i see there are a handful available?</summary>
 
-this is ultimately up to the operator. we'll offer our highest bid for a given slot and they'll offer theirs. your sidecar will automatically select the highest. we recommend adding several so we are forced to offer our best bids. several public dashboards exist like [relayscan.io](https://relayscan.io/) or [rated.network](https://explorer.rated.network/relays?network=mainnet\&timeWindow=30d) to show how many slots different relays have the highest bid.
+this is ultimately up to the operator. we'll offer our highest bid for a given slot and they'll offer theirs. your sidecar will automatically select the highest. we recommend adding several so we are forced to offer our best bids. several public dashboards exist like [relayscan.io](https://relayscan.io/) or [rated.network](https://explorer.rated.network/relays?network=mainnet&timeWindow=30d) to show how many slots different relays have the highest bid.
 
 </details>
 
