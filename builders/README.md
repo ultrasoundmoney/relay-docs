@@ -26,6 +26,7 @@ start here:
 auctions:
 
 - [bid forwarding](bid-forwarding.md) — how bids gossip between auction instances and what wins globally.
+- [floor bid](floor-bid.md) — non-cancellable submissions set a per-auction floor; what `accepted bid below floor, skipped validation` means.
 - [TYO auction](tyo-auction.md) — Tokyo instance, whitelist and pricing.
 - [US auction](us-auction.md) — Vint Hill instance.
 
