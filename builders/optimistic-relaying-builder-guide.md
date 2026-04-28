@@ -1,14 +1,14 @@
 # optimistic relaying
 
-Thank you for your interest in low-latency optimistic relaying with [the ultra sound relay](https://relay.ultrasound.money)! This document is an onboarding guide for you, Ethereum block builder. Please take the time to understand it :)
+An onboarding guide for builders interested in low-latency optimistic relaying with [the ultra sound relay](https://relay.ultrasound.money).
 
 **TLDR**
 
 1. Share with us over Telegram or Discord the list of builder pubkeys you want promoted for optimistic relaying. We will manually review recent bid submissions from those pubkeys to ensure a low historical rate of bad bids. A bad bid is one with an invalid block or an insufficient payment to the proposer.
 2. Post a maximum of 64 stETH collateral to `relay.ultrasound.eth` and share the transaction details with us. The transaction sender must be an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address.
 3. The relay will automatically demote you for submitting a single bad bid to the relay. You will only be re-promoted after the underlying reason for submitting a bad bid is addressed.
-4. A bad bid that wins the auction and is signed by the proposer will cause an on-chain incident, i.e. a missed slot or an insufficient proposer payment. We expect you to directly compensate the proposer the bid value plus a fixed 0.01 ETH penalty within 24 hours and send us the transaction details.
-5. Without receiving proof the proposer was compensated within 24 hours we may use your collateral to compensate the proposer ourselves.
+4. A bad bid that wins the auction and is signed by the proposer will cause an on-chain incident, i.e. a missed slot or an insufficient proposer payment. We expect you to directly compensate the proposer the bid value plus a fixed 0.01 ETH penalty within 48 hours and send us the transaction details.
+5. Without receiving proof the proposer was compensated within 48 hours we may use your collateral to compensate the proposer ourselves.
 
 ### Purpose
 
@@ -53,6 +53,9 @@ When a bad bid is submitted, even if the bid does not get signed by the proposer
 
 ### On-chain incidents
 
-Due to the nature of optimistically relayed blocks it's possible a bad block gets through. Whenever this happens, ultra sound takes responsibility to resolve the incident on behalf of the proposer. In the event of any foul play e.g. a builder paying themselves instead of the proposer in the last transaction, a safety fault, ultra sound will naturally compensate the proposer in full from the builder's collateral. At times ultra sound may be confident there is no foul play, but only a rare liveness failure. In this event bids are only covered up to 10 ETH of bid value. We as a relay hold ourselves to the same standard for liveness failures.
+Optimistic relaying means a bad block can occasionally make it on-chain. When that happens ultra sound aims to help resolve the incident, with how much we cover depending on the cause:
 
-In the event of a compensated failure we expect the builder to directly send ETH to the proposer's fee recipient to compensate for a bad bid leading to an on-chain incident. Please share with us details of the corresponding transaction. Without proof the proposer was compensated within 48 hours we may use your collateral to compensate the proposer ourselves.
+- **Foul play** — e.g. a builder paying themselves instead of the proposer in the last transaction, a safety fault. We will use the builder's collateral to compensate the proposer in full.
+- **Liveness failure** — no foul play, a rare bug or operational fault. We aim to compensate proposers up to 10 ETH of bid value on a best-effort basis. We hold ourselves to the same standard for liveness failures on our own side.
+
+When the builder's collateral is in scope we ask the builder to send ETH directly to the proposer's fee recipient and share the transaction with us. If we don't receive that proof within 48 hours we may use the collateral to compensate the proposer ourselves.
