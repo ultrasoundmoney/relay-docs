@@ -1,81 +1,104 @@
-# ultra sound's view on the post-ePBS block building pipeline
+# Ultra sound's view on the post-ePBS block building pipeline
 
-_early take. ultra sound's views may update in light of new information._
+_Early take. Ultra sound's views may update in light of new information._
 
-this note is primarily for proposers — especially large staking operators — and secondarily for builders and searchers with an interest in the ethereum transaction pipeline post-ePBS. it lays out what we believe will protect proposer revenue, builder competition, and the long-term health of the auction.
+This note is primarily for proposers — especially large staking operators — and secondarily for builders and searchers with an interest in the ethereum transaction pipeline post-ePBS. It lays out what we believe will protect proposer revenue, builder competition, and the long-term health of the auction.
 
-## the pipeline will stay sophisticated
+## The pipeline will stay sophisticated
 
-building the highest-value block fundamentally comes down to getting the most productive ordering of transactions into the block. that combines whatever methods turn out to matter, e.g. superior flow sharing in TEEs, better accommodation of private flow, low-latency communication and execution, and more. ePBS does not change that; it changes who runs which piece, and on what terms.
+Building and delivering the highest value block to proposers is a challenging problem across various dimensions. Doing so efficiently requires the work and coordination of technically sophisticated actors.
+ePBS does not change that; it changes who runs which piece, and on what terms.
+We participate in the discussion on the future design of that pipeline, including through initiatives like the [Blockspace Forum](https://blockspace.forum/).
+Everything below is our current view from that vantage point.
 
-we therefore expect some component of the ethereum transaction pipeline to remain sophisticated and vertically integrated, from user to proposer. ultra sound is an active participant in the broader conversation about how that pipeline should look, including initiatives like the [Blockspace Forum](https://blockspace.forum/). everything below is our view from that vantage point.
+## Connecting to a relay is rational and altruistic
 
-## a professional auctioneer lowers the barrier to compete
+Post-ePBS proposers can choose among different channels to receive bids from builders:
 
-an open, neutral auctioneer is the most efficient way for many builders to compete for the same slot. each builder posts to the same place, gets well-defined treatment, and doesn't need a direct integration with every proposer. that breadth of participation is what drives the winning bid up.
+1. The p2p network 
+2. Direct builder connections
+3. Relays
 
-once the auctioneer is removed and builders bid directly to a proposer, the cost of bidding goes up: integration, identity, trust, and a blind first-price game where every builder has to guess what the others will do. in expectation, fewer builders compete per slot, and the proposer earns less on average.
+Proposers will also have to decide whether to keep accepting trusted bids or enforce trustless bids. 
+Below we discuss why we think it is both in the interest of the individual proposer as well as the ecosystem as a whole to keep accepting trusted bids via relays.
 
-## the no-cap bid lane: don't cap your payout
+## An open auction lowers the barrier to compete
 
-ultra sound runs a trusted bid path with no ceiling on bid size and no collateral cap on what we can deliver to you. we call it the no-cap bid lane, and it is where the long tail of proposer revenue lives.
+An open, neutral auction is the most efficient way for many builders to compete for the same slot. Each builder posts to the same place, gets well-defined treatment, and doesn't need a direct integration with every proposer. That breadth of participation is what drives the winning bid up.
 
-most slots are unremarkable. the average proposer reward is dragged up by a long tail of rare, high-value opportunities — single slots worth tens or hundreds of ETH. over the past year on mainnet, the mean per-slot payout was about 2.6× the median, the top 1% of slots accounted for roughly 37% of all proposer earnings, and a single slot paid out more than 560 ETH. if a proposer accepts only trustless bids, those long-tail opportunities are bounded by builder collateral.
+Once this auction is removed and builders bid directly to a proposer, the cost of bidding goes up: integration, identity, trust, and a blind first-price game where every builder has to guess what the others will do. In expectation, fewer builders compete per slot, and the proposer earns less on average.
 
-concretely: suppose the highest-value block in a given slot is worth 300 ETH, and the second-highest-collateral builder only has 100 ETH on-chain. the next builder cannot credibly bid above 100 ETH. the well-collateralized builder bids 100.001 ETH and pockets the remaining ~200 ETH. the proposer leaves 200 ETH on the table on a slot they will not see again for months.
+## Collateral requirement caps bid value and further centralizes the builder market
 
-a trustless-only policy turns collateral into a hard cap on your top bid. only the largest, best-collateralized builders can compete for those slots; the rest of the field is priced out by capital, not by skill. ultra sound strongly encourages proposers to keep the no-cap bid lane open: keep accepting trusted bids from us, with no ceiling. those rare payouts are exactly what makes proposing on ethereum unusually profitable; capping them caps your average.
+Ultra sound runs a trusted bid path with no ceiling on bid size and no collateral cap. We call it the no-cap bid lane, and it is where the long tail of proposer revenue lives.
 
-## our auction plan post-ePBS
+Most slots are of relatively low value. The average proposer reward is dragged up by a long tail of rare, high-value opportunities — single slots worth tens or hundreds of ETH.
+Over the past year on mainnet:
 
-ultra sound has preferred an open auction so far: builders see the current top bid and can decide whether they have room to beat it. the price signal is useful, and it pushes the auction up.
+- mean slot value was about 2.6× the median 
+- top 1% of slots accounted for roughly 37% of all proposer earnings
+- a single slot paid out more than 560 ETH
 
-the same signal is exploitable. a non-cooperative builder can watch the open auction, then route a bid direct to the proposer that is slightly higher in price but built from a lower-value block. by using the open price as a target, they undercut on real value while winning on bid. in the naive case where cooperative builders don't respond, the chain lands a lower-value block than the open auction would have produced. in practice, cooperative builders stop posting to the open auction to hide their bids from the freerider, and the price signal dies, which forces a blind first-price game on the proposer regardless.
+If a proposer accepts only trustless bids, those long-tail opportunities are bounded by builder collateral.
+Concretely it is bounded by the collateral balance of the second richest builder. Beyond that value there is at most one builder left who has no incentive to increase their bid.
+Furthermore a trustless-only policy further centralizes the builder market: only the largest, best-collateralized builders can compete for those slots; the rest of the field is priced out by capital, not by skill.
+Ultra sound strongly encourages proposers to keep the no-cap bid lane open: keep accepting trusted bids from us, with no ceiling. Those rare payouts are exactly what makes proposing on ethereum unusually profitable; capping them caps your average.
 
-### preferred: an authenticated open auction
+## A fully open auction is incompatible with private side-channels
 
-our preference is still an open auction, run as an *authenticated* open auction, i.e. participating builders are trusted not to use the auction's information to route bids around it. when it works, this is the highest-value format for proposers: real-time price discovery with all top builders pushing the bid up together. we also think it is fragile. the incentive to defect is real, and one freerider is enough to collapse the price signal for the rest of the field.
+As stated above we prefer an open auction: builders see the current top bid and can decide whether they have room to beat it. The price signal is useful, and it pushes the auction up.
+When builders have access to a private side-channel in the form of direct proposer connections that same signal becomes exploitable.
 
-### backup: a sealed second-price auction
+Any such builder can:
 
-because the open format is fragile, we will have a sealed-bid second-price auction ready, and expect to experiment with it in the coming months. we will keep running an auction for as long as it works for the proposer — as long as at least two top builders engage with it, the proposer captures value they would not otherwise see.
+1. Watch the current price on the open auction
+2. Outbid it in a private bid delivered to the proposer directly, without revealing it to other builders
 
-### if the auction is bypassed: where the JIT advantage goes
+Eventually other builders are forced to do the same and the open auction dies forcing a blind first-price game on the proposer.
+While the in protocol p2p auction is fully open by design and has no way to avoid this fate, relays are less constrained in the design of the auction.
+Below are two potential solutions we are considering.
 
-should every top builder forgo even the sealed second-price auction — each running their own price discovery by guessing the second-highest bid and submitting a sealed first-price bid direct to the proposer — there is nothing left for an auctioneer to do, and we stop running the auction.
+### Preferred solution: an authenticated open auction
+Participating builders are trusted not to use the auction's information to route bids around it and excluded from the auction if they do. When it works, this is the highest-value format for proposers: real-time price discovery with all top builders pushing the bid up together. We also think it is fragile. The incentive to defect is real. One defector is enough to collapse the price signal for the rest of the field.
 
-ultra sound is already good at guessing the second-highest global bid blind, and more importantly we lead the field in just-in-time bid delivery. those are valuable properties for any builder running a sealed first-price game against the proposer.
+### Backup solution: a sealed second-price auction
+Because the open format is fragile, we will have a sealed-bid second-price auction ready, and expect to experiment with it in the coming months. We will keep running an auction for as long as it works for the proposer — as long as at least two top builders engage with it, the proposer captures value they would not otherwise see.
 
-to be explicit about preference order: we would rather run an auction that both builders and proposers pay into. with an auction worth competing in, there is no need to bestow the JIT advantage on anyone. but no bids means no auction, and the JIT advantage has to live somewhere. preferably, in our own builder (see below). selling it to a third-party builder is a distant alternative.
+## If relays disappear builders need to compete on proposer integration
 
-### in parallel: an ultra sound builder
+Should every top builder forgo even the sealed second-price auction there is nothing left for a relay to do, and we stop running the auction.
+In this situation builders will likely be forced to connect to proposers directly to stay competitive.
 
-we don't want the future of ethereum's high-performance, neutral transaction pipeline to depend on what a handful of builders decide to do in reaction to a market-structure shift with unclear outcomes. consistent with the framing at the top of this doc, some component of the pipeline will stay sophisticated and vertically integrated. we'd rather be a participant than a spectator. ultra sound is seriously exploring running a builder itself.
+This involves doing a lot of the work that we have been focused on over the last years. In particular:
 
-we'd also welcome proposers tipping the scales toward non-leading builders, e.g. allowing a designated non-leader to deliver its bid slightly later than the rest of the field. small structural edges are what keep a competitive field of builders alive.
+- Just-in-time bid delivery to proposers
+- Estimating the second price in a blind auction
 
-## let's talk
+We'd much prefer to keep offering access to these capabilities to all builders via our relay.
+However if this is no longer an option, we'd leverage them in the context of an **ultra sound builder** which we are currently considering.
 
-post-ePBS market structure is uncertain enough that we don't want to write this doc and stop there. if you operate a large stake, or run searcher flow, your decisions are one of the main inputs to how this plays out, and we want to hear from you before the dust settles.
+## Let's talk
 
-**staking operators.** [alex](https://t.me/smilingalex) would love to compare notes on where you agree, where you diverge, and especially:
+Post-ePBS market structure is uncertain enough that we don't want to write this doc and stop there. If you operate a large stake, or run searcher flow, your decisions are one of the main inputs to how this plays out, and we want to hear from you before the dust settles.
 
-- would you expect to keep accepting trusted bids from ultra sound, with no cap?
-- what do you expect your config to look like towards other relays and builders: trusted vs. not, and if trusted, what cap?
-- which builders, if any, are you planning to add directly?
+**Staking operators.** [Alex](https://t.me/smilingalex) would love to compare notes on where you agree, where you diverge, and especially:
 
-we have opinions on the last one, but no urge to push hard; you know your situation better than we do.
+- Would you expect to keep accepting trusted bids from ultra sound, with no cap?
+- What do you expect your config to look like towards other relays and builders: trusted vs. not, and if trusted, what cap?
+- Which builders, if any, are you planning to add directly?
 
-**searchers.** if you'd like more than one efficient, neutral, private, low-latency path into ethereum to keep existing, consider sending your high-fee-paying bundles to us. our fees are very low, we expect many proposers will connect to us with no cap, and we have years of practice maintaining the liveness needed to keep high-cap trustless bids landing.
+We have opinions on the last one, but no urge to push hard; you know your situation better than we do.
 
-contacts at the bottom of this page.
+**Searchers.** If you'd like more than one efficient, neutral, private, low-latency path into ethereum to keep existing, consider sending your high-fee-paying bundles to us. Our fees are very low, we expect many proposers will connect to us with no cap, and we have years of practice maintaining the liveness needed to keep high-cap trustless bids landing.
 
-## summary
+Contacts at the bottom of this page.
 
-- keep a professional auctioneer in the loop. it broadens builder participation and lifts your average.
-- keep the no-cap bid lane open: trusted bids from ultra sound, with no ceiling. don't cap your top bid; the long tail is where most of your edge lives.
-- expect us to try an authenticated open auction first, with a sealed second-price auction ready as a fallback.
-- ultra sound is seriously exploring running its own builder, regardless of how the auction shakes out. if the auction is bypassed entirely, our builder is the natural home for our JIT-delivery edge.
-- operators and searchers - do talk to us.
+## Summary
 
-reach us: telegram [@ultrasoundrelay](https://t.me/ultrasoundrelay), [@ultrasoundbuilder](https://t.me/ultrasoundbuilder), [@smilingalex](https://t.me/smilingalex), or email [alex@ultrasound.money](mailto:alex@ultrasound.money).
+- Keep a professional auctioneer in the loop. It broadens builder participation and lifts your average.
+- Keep the no-cap bid lane open: trusted bids from ultra sound, with no ceiling. Don't cap your top bid; the long tail is where most of your edge lives.
+- Expect us to try an authenticated open auction first, with a sealed second-price auction ready as a fallback.
+- Ultra sound is seriously exploring running its own builder, regardless of how the auction shakes out. If the auction is bypassed entirely, our builder is the natural home for our JIT-delivery edge.
+- Operators and searchers - do talk to us.
+
+Reach us: Telegram [@ultrasoundrelay](https://t.me/ultrasoundrelay), [@ultrasoundbuilder](https://t.me/ultrasoundbuilder), [@smilingalex](https://t.me/smilingalex), or email [alex@ultrasound.money](mailto:alex@ultrasound.money).
