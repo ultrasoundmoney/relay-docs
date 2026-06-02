@@ -28,9 +28,9 @@ An open, neutral auction is the most efficient way for many builders to compete 
 
 Once this auction is removed and builders bid directly to a proposer, the cost of bidding goes up: integration, identity, trust, and a blind first-price game where every builder has to guess what the others will do. In expectation, fewer builders compete per slot, and the proposer earns less on average.
 
-## Collateral requirement caps bid value and further centralizes the builder market
+## Collateral requirement caps bid value and centralizes the builder market
 
-Ultra sound runs a trusted bid path with no ceiling on bid size and no collateral cap. We call it the no-cap bid lane, and it is where the long tail of proposer revenue lives.
+Ultra sound runs a trusted bid path with no ceiling on bid size and no collateral cap. We call it the no-cap bid lane, and it is where the long tail of proposer revenue lives. In one line: don't cap your payout.
 
 Most slots are of relatively low value. The average proposer reward is dragged up by a long tail of rare, high-value opportunities — single slots worth tens or hundreds of ETH.
 Over the past year on mainnet:
@@ -41,6 +41,7 @@ Over the past year on mainnet:
 
 If a proposer accepts only trustless bids, those long-tail opportunities are bounded by builder collateral.
 Concretely it is bounded by the collateral balance of the second richest builder. Beyond that value there is at most one builder left who has no incentive to increase their bid.
+For example: if the best block in a slot is worth 300 ETH but the second-richest builder holds only 100 ETH of collateral, the top builder need only bid just above 100 ETH and keeps the other ~200 ETH — value the proposer never sees, on a slot they may not get again for months.
 Furthermore a trustless-only policy further centralizes the builder market: only the largest, best-collateralized builders can compete for those slots; the rest of the field is priced out by capital, not by skill.
 Ultra sound strongly encourages proposers to keep the no-cap bid lane open: keep accepting trusted bids from us, with no ceiling. Those rare payouts are exactly what makes proposing on ethereum unusually profitable; capping them caps your average.
 
