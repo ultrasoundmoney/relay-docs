@@ -10,3 +10,4 @@ https://relay-builders-eu.ultrasound.money/relay/v1/data/bidtraces/builder_block
 https://relay-analytics.ultrasound.money/relay/v1/data/bidtraces/builder_blocks_received
 ```
 
+For bid submission records such as `builder_blocks_received`, `timestamp` and `timestamp_ms` refer to when the relay received the bid submission (`received_at` internally). This is distinct from top bid websocket update timestamps, which describe when a bid became eligible/top after decoding and auction-state comparison.
