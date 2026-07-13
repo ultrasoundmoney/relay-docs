@@ -12,3 +12,4 @@ the following routes are available for the EU and US instances:
 * `/relay/v1/builder/validators`
 * `/eth/v1/builder/header`
 * `/ws/v1/top_bid`
+* `/ws/v2/top_bid`

@@ -6,7 +6,7 @@
 2. submission format: Submit your bids using SSZ (not JSON). If at all possible, use block deltas.
 3. submission frequency: Receive an API token and bypass our free-for-all-tier rate limits. Top builders make a few thousand submissions per block landed. See [rate-limits.md](rate-limits.md).
 4. optimistic relaying: This is a massive relay-side optimization where bids are processed optimistically, skipping simulation and saving on simulation latency. Almost all builders (22 of them!) have enabled optimistic relaying with the ultra sound relay—it's hard to compete without. For more detail see: [optimistic-relaying-builder-guide.md](optimistic-relaying-builder-guide.md).
-5. top bid websocket: To make competitive bids a builder needs to be aware of the auction's bid-to-beat, the top bid. We offer a websocket to efficiently keep track. Read more here: https://github.com/ultrasoundmoney/docs/blob/main/top-bid-websocket.md
+5. top bid websocket: To make competitive bids a builder needs to be aware of the auction's bid-to-beat, the top bid. We offer a websocket to efficiently keep track. Read more here: [top-bid-websocket.md](top-bid-websocket.md)
 6. use http/2 or `Connection: keep-alive` if using http/1
 
 ## URL
