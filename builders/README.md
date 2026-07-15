@@ -36,6 +36,7 @@ submission optimizations:
 - [optimistic v3](optimistic-v3.md) — header-only V3 submissions (in testing).
 - [bid adjustment](bid-adjustment.md) — capture latency-driven bid delta as kickback.
 - [top bid websocket](top-bid-websocket.md) — stream of the current top bid.
+- [deadline prediction api](deadline-prediction-api.md) — paid stream of predicted and live-refined auction deadlines.
 
 data:
 
