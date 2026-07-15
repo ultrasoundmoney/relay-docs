@@ -8,7 +8,7 @@ Note: at times, multiple parent blocks are reasonable to build on due to a split
 
 ## v1
 
-Streams out every new local top bid: the highest bid among bids submitted directly to an auction instance. Any higher bids forwarded from other auction instances - which may be returned at the reply deadline - do not show up in this stream.
+Streams out every new local top bid: the highest bid among bids submitted to an auction instance. Any higher bids forwarded from other auction instances - which may be returned at the reply deadline - do not show up in this stream.
 
 Endpoints (also available on the respective direct auction hosts):
 * `ws://relay-builders-eu.ultrasound.money/ws/v1/top_bid`
@@ -35,7 +35,7 @@ You can find an example client here: [https://github.com/ultrasoundmoney/top-bid
 
 ## v2
 
-Streams out the global top bid: the highest bid known to an auction instance among bids submitted directly and those forwarded from other auctions. The global top bid is the bid the relay will deliver to the proposer at the reply deadline, so it is the one to compete with. Note: this does not mean a builder ends up outbidding their own fresher, lower bids with more stale forwarded bids. see [bid-forwarding.md](https://github.com/ultrasoundmoney/relay-docs/blob/main/builders/bid-forwarding.md) for more detail.
+Streams out the global top bid: the highest bid known to an auction instance among bids submitted to that instance and those forwarded from other auction instances. The global top bid is the bid the relay will deliver to the proposer at the reply deadline, so it is the one to compete with. Note: this does not mean a builder ends up outbidding their own fresher, lower bids with more stale forwarded bids. see [bid-forwarding.md](https://github.com/ultrasoundmoney/relay-docs/blob/main/builders/bid-forwarding.md) for more detail.
 
 v2 timestamps have nanosecond granularity, up from millisecond in v1.
 
