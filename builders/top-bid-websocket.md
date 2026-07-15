@@ -1,6 +1,6 @@
 # top bid websocket
 
-Provides a stream of updates of the auction's current top bid. We run several auctions and forward bids between them (see [bid-forwarding.md](bid-forwarding.md)). Two versions are available:
+Provides a stream of updates of the auction's current top bid. We run several auctions and forward top bids between them (see [bid-forwarding.md](bid-forwarding.md)). Two versions are available:
 
 * **v1** streams the top bid among the bids submitted to this auction.
 * **v2 (NEW)** streams the global top bid: the highest among the bids submitted to this auction and those forwarded from our other auctions.
@@ -51,7 +51,7 @@ It emits SSZ encoded data of the following (rust) type:
 
 ```rust
 pub struct TopBidUpdateV2 {
-    /// Nanosecond timestamp at which this became the global top bid
+    /// Nanosecond timestamp at which this became the top bid in this auction instance
     pub timestamp: u64,
     pub slot: u64,
     pub block_number: u64,
