@@ -19,7 +19,7 @@ It emits SSZ encoded data of the following (rust) type:
 
 ```rust
 pub struct TopBidUpdate {
-    /// Millisecond timestamp at which this became the top bid
+    /// Millisecond timestamp at which this became the eligible top bid
     pub timestamp: u64,
     pub slot: u64,
     pub block_number: u64,
@@ -48,7 +48,7 @@ It emits SSZ encoded data of the following (rust) type:
 
 ```rust
 pub struct TopBidUpdateV2 {
-    /// Nanosecond timestamp at which this became the top bid in an auction instance
+    /// Nanosecond timestamp at which this became the eligible top bid in an auction instance
     pub timestamp: u64,
     pub slot: u64,
     pub block_number: u64,
