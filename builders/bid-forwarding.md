@@ -1,6 +1,6 @@
 # bid forwarding
 
-on the auction level, unless you've asked us not to, we gossip all top bids between our auction instances. it is also possible to control this on a per-submission basis using the `SHARE` http header. possible values are `["all", "none", "us", "europe"]`.
+on the auction level, we gossip all top bids between our auction instances.
 
 the closest auction instance to the proposer will receive a stream of bids from every auction. whenever the latest possible moment to respond to a proposer arrives, it will consider the freshest bid received by every builder, and reply with the highest among them. this has two important consequences:
 
