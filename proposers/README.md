@@ -23,6 +23,7 @@ https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f
 - [connection guide](connection-guide.md) — picking a sidecar, choosing a URL, FAQ.
 - [ofac](ofac.md) — how the filtered URL is maintained.
 - [get_header endpoint](get-header.md) — what to expect from `GET /eth/v1/builder/header/...` and which response codes mean what.
+- [missed slot reimbursement](missed-slot-reimbursement.md) — what we pay if a slot is missed for a header we delivered, and how it is calculated.
 
 ## questions?
 

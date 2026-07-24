@@ -7,7 +7,7 @@ An onboarding guide for builders interested in low-latency optimistic relaying w
 1. Share with us over Telegram or Discord the list of builder pubkeys you want promoted for optimistic relaying. We will manually review recent bid submissions from those pubkeys to ensure a low historical rate of bad bids. A bad bid is one with an invalid block or an insufficient payment to the proposer.
 2. Post a maximum of 64 stETH collateral to `relay.ultrasound.eth` and share the transaction details with us. The transaction sender must be an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address.
 3. The relay will automatically demote you for submitting a single bad bid to the relay. You will only be re-promoted after the underlying reason for submitting a bad bid is addressed.
-4. A bad bid that wins the auction and is signed by the proposer will cause an on-chain incident, i.e. a missed slot or an insufficient proposer payment. We expect you to directly compensate the proposer the bid value plus a fixed 0.01 ETH penalty within 48 hours and send us the transaction details.
+4. A bad bid that wins the auction and is signed by the proposer will cause an on-chain incident, i.e. a missed slot or an insufficient proposer payment. We expect you to directly compensate the proposer per [missed slot reimbursement](../proposers/missed-slot-reimbursement.md) — the bid value plus the estimated missed CL proposer reward — within 48 hours and send us the transaction details.
 5. Without receiving proof the proposer was compensated within 48 hours we may use your collateral to compensate the proposer ourselves.
 
 ### Purpose
@@ -33,7 +33,7 @@ Consider the example below:
  0xdddddd...    | false         |                  0 | bloxroute
 ```
 
-Pubkeys `0xaaaaaa` and `0xbbbbbb` share the same builder ID `mike` and collateral of 0.99 ETH. (0.99 ETH would be assuming 1 ETH collateral minus 0.01 ETH for the fixed penalty.) Since `is_optimistic` is `true` any bid with a value less than or equal to 0.99 ETH will be relayed optimistically. A larger bid, e.g. with 10 ETH of value, will not be relayed optimistically. If either pubkey submits an invalid bid both pubkeys will be demoted before the next slot.
+Pubkeys `0xaaaaaa` and `0xbbbbbb` share the same builder ID `mike` and collateral of 0.99 ETH. (0.99 ETH would be assuming 1 ETH collateral minus a 0.01 ETH reserve toward the CL-rewards component of a potential [reimbursement](../proposers/missed-slot-reimbursement.md).) Since `is_optimistic` is `true` any bid with a value less than or equal to 0.99 ETH will be relayed optimistically. A larger bid, e.g. with 10 ETH of value, will not be relayed optimistically. If either pubkey submits an invalid bid both pubkeys will be demoted before the next slot.
 
 Pubkey `0xcccccc` also has 0.99 ETH of collateral but `is_optimistic` is `false` so their bids will not be relayed optimistically. Builder `0xdddddd` has no collateral so their bids will also not be relayed optimistically.
 
@@ -59,3 +59,5 @@ Optimistic relaying means a bad block can occasionally make it on-chain. When th
 - **Liveness failure** — no foul play, a rare bug or operational fault. We aim to compensate proposers up to 10 ETH of bid value on a best-effort basis. We hold ourselves to the same standard for liveness failures on our own side.
 
 When the builder's collateral is in scope we ask the builder to send ETH directly to the proposer's fee recipient and share the transaction with us. If we don't receive that proof within 48 hours we may use the collateral to compensate the proposer ourselves.
+
+In both cases the amount owed to the proposer is computed as described in [missed slot reimbursement](../proposers/missed-slot-reimbursement.md).
