@@ -33,6 +33,7 @@ auctions:
 submission optimizations:
 
 - [optimistic relaying](optimistic-relaying-builder-guide.md) — collateral-backed asynchronous simulation.
+- [missed slot reimbursement](../proposers/missed-slot-reimbursement.md) — what an on-chain incident costs and who pays.
 - [optimistic v3](optimistic-v3.md) — header-only V3 submissions (in testing).
 - [bid adjustment](bid-adjustment.md) — capture latency-driven bid delta as kickback.
 - [top bid websocket](top-bid-websocket.md) — stream of the current top bid.

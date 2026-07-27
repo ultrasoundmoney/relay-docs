@@ -4,6 +4,8 @@ NOTE: this API is still being tested and is subject to change.
 
 This document describes the ultra sound relay V3 submission endpoint, which includes adjustments. For a description of vanilla V3 submissions, see [here](https://ethresear.ch/t/introduction-to-optimistic-v3-relays/22066). Like vanilla V3 submissions, these are only available for optimistic/collateralized builders. Unlike for our V1 submissions, submission adjustability is not optional. This is done to cover the extra operational expense of a builder dependency in the critical path, and to enable value-only bid updates in the future.
 
+Note that with V3 the relay holds only your header — the full payload is fetched from your local gateway at `getPayload` time. If a winning V3 header's payload cannot be retrieved in time, the slot is missed; such incidents fall under [missed slot reimbursement](../proposers/missed-slot-reimbursement.md).
+
 Submissions are otherwise identical to vanilla V3, except they include adjustment data:
 
 ```rust
