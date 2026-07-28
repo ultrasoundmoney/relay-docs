@@ -4,6 +4,22 @@ Bid adjustment is feature of the ultra sound relay. The idea is that we try to a
 
 To achieve this, we need block submissions to include some additional data. As an incentive for builders to integrate we offer a percentage of the bid delta as a "kickback".
 
+## Accounting
+
+To use the feature, ultra sound sets up a wallet it controls (the `fee_payer_address` described below) and the builder deposits ETH into it, topping it up continually as it is spent.
+
+With the wallet funded, the relay can adjust a submission: the last transaction of the block, which pays the bid, is replaced with a slightly lower payment from the fee payer wallet. The builder's own payout transaction is dropped, so the builder keeps the full original bid amount while the adjusted bid is paid out of the fee payer wallet.
+
+Because the adjusted bid is paid from the fee payer wallet, an adjustment is only possible when the post-adjustment bid value fits within the wallet balance. The higher the balance, the more valuable the adjustments we can make. The largest adjustment we've landed to date took a 35.01 ETH bid down to 20.64 ETH, a delta of 14.37 ETH, which required the builder's balance to cover the 20.64 ETH payout.
+
+A delta is only earned when the adjusted bid goes on to win the slot with the proposer through ultra sound. Adjusted submissions that don't land earn nothing.
+
+Each earned delta is split 50/50 between the builder and the relay. Because the builder keeps the original bid amount while the wallet pays only the adjusted bid, the builder initially holds the entire delta. At the end of the month ultra sound invoices the builder for its 50%, which settles the balance: the builder pays ultra sound the half it hasn't received yet.
+
+For example: a builder submits a 1.00 ETH bid which we adjust to 0.90 ETH, and the block wins the slot. The proposer receives 0.90 ETH from the fee payer wallet, and the builder keeps the 1.00 ETH it would have paid, netting the full 0.10 ETH delta up front. The monthly invoice transfers 0.05 ETH to ultra sound, leaving each side with half.
+
+Every adjustment and its delta is available through the [Data API](#data-api) below, so builders can independently verify invoices.
+
 ## Technical implementation
 
 Enabled by `?adjustments=1` and by including an `adjustment_data` object in the normal block submission:
