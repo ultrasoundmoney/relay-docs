@@ -22,7 +22,7 @@ Three ways to run a relay auction on top:
 | **Staked identity**         | per builder               | one per relay      | per builder            |
 | **# Signed bids**           | one per slot              | one per slot       | every submission       |
 | **Staked wallet**           | yours, key shared with us | ultra sound's      | yours, you operate     |
-| **Upfront capital**         | your stake                | optional           | your stake             |
+| **Builder upfront capital** | Full max bid              | None               | Full max bid           |
 | **Submission API**          | unchanged[^payload]       | unchanged[^payload] | new[^native]          |
 | **When you pay**            | CL block inclusion[^attestation] | EL payload inclusion | CL block inclusion[^attestation] |
 | **Whom you pay**            | proposer                  | ultra sound        | proposer               |
@@ -30,18 +30,18 @@ Three ways to run a relay auction on top:
 | **How you pay (trusted)**   | EL tx                     | EL tx              | EL tx                  |
 | **Adjustments**[^adjustments] | yes                     | yes                | no                     |
 | **Payload publishing**      | relay and/or you          | only relay         | only you               |
-| **Relay simulation**        | optional[^simulation]     | required, may skip[^simulation][^collaboration] | none                   |
+| **Relay simulation**        | optional[^simulation]     | Default required[^simulation][^collaboration] | Default none[^simulation] |
 
 [^payload]: Some payload details change irrespective of this design decision: the extended `execution_requests` (EIP-8282) and block access lists (EIP-7928).
 [^native]: Submissions become ePBS bids, constructed and signed by the builder.
-[^attestation]: Independent of whether the block is actually included, i.e. whether the payload has been revealed.
+[^attestation]: Once the proposer includes your signed bid in a CL block, you are committed to pay, independent of whether the EL payload is revealed or valid.
 [^adjustments]: See [bid adjustments](../builders/bid-adjustment.md).
 [^simulation]: Still required for trusted bids / OFAC filtering. The proposer is paid whether or not the EL payload is valid, making simulation doubly important for builders. Ultra Sound is happy to continue offering this as a service.
 [^collaboration]: May be skipped in collaboration through e.g. optimistic collateral.
 
 ## Our preference
 
-A mediated auction (1 or 2), these let builders focus on building execution payloads and Ultra Sound be useful in handling the rest. In addition, ePBS-native rules out adjustments which benefit bigger builders and Ultra Sound. That said, we are open to supporting ePBS-native submissions, though likely at a minimum, free service level, or paid higher service level.
+We prefer a mediated auction (1 or 2): these designs let builders focus on execution payloads while Ultra Sound handles the rest. They also preserve bid adjustments, which benefit larger builders and Ultra Sound. We are also open to ePBS-native submissions, with at least a free basic tier or higher paid service tier.
 
 ## Status
 
