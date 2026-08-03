@@ -30,7 +30,7 @@ Three ways to run a relay auction on top:
 | **How you pay (trusted)**   | EL tx                     | EL tx              | EL tx                  |
 | **Adjustments**[^adjustments] | yes                     | yes                | no                     |
 | **Payload publishing**      | relay and/or you          | only relay         | only you               |
-| **Relay simulation**        | optional[^simulation]     | Default required[^simulation][^collaboration] | Default none[^simulation] |
+| **Relay simulation**        | optional[^simulation]     | default required[^simulation][^collaboration] | default none[^simulation] |
 
 [^payload]: Some payload details change irrespective of this design decision: the extended `execution_requests` (EIP-8282) and block access lists (EIP-7928).
 [^native]: Submissions become ePBS bids, constructed and signed by the builder.
