@@ -22,7 +22,7 @@ Three ways to run a relay auction on top:
 | **Staked identity**         | per builder               | one per relay      | per builder            |
 | **# Signed bids**           | one per slot              | one per slot       | every submission       |
 | **Staked wallet**           | yours, key shared with us | ultra sound's      | yours, you operate     |
-| **Upfront capital**         | your stake                | none               | your stake             |
+| **Upfront capital**         | your stake                | optional           | your stake             |
 | **Submission API**          | unchanged[^payload]       | unchanged[^payload] | new[^native]          |
 | **When you pay**            | attestation[^attestation] | block inclusion    | attestation[^attestation] |
 | **Whom you pay**            | proposer                  | ultra sound        | proposer               |
@@ -30,13 +30,14 @@ Three ways to run a relay auction on top:
 | **How you pay (trusted)**   | EL tx                     | EL tx              | EL tx                  |
 | **Adjustments**[^adjustments] | yes                     | yes                | no                     |
 | **Payload publishing**      | relay and/or you          | only relay         | only you               |
-| **Relay simulation**        | optional[^simulation]     | required           | none                   |
+| **Relay simulation**        | optional[^simulation]     | required[^collaboration] | none                   |
 
-[^payload]: some payload details change irrespective of this design decision: the extended `execution_requests` (EIP-8282) and block access lists (EIP-7928).
-[^native]: submissions become ePBS bids, constructed and signed by the builder.
-[^attestation]: independent of whether the block is actually included, i.e. whether the payload has been revealed.
-[^adjustments]: see [bid adjustments](../builders/bid-adjustment.md).
-[^simulation]: still required for trusted bids / ofac filtering.
+[^payload]: Some payload details change irrespective of this design decision: the extended `execution_requests` (EIP-8282) and block access lists (EIP-7928).
+[^native]: Submissions become ePBS bids, constructed and signed by the builder.
+[^attestation]: Independent of whether the block is actually included, i.e. whether the payload has been revealed.
+[^adjustments]: See [bid adjustments](../builders/bid-adjustment.md).
+[^simulation]: Still required for trusted bids / OFAC filtering. The proposer is paid whether or not the EL payload is valid, making simulation doubly important for builders. Ultra Sound is happy to continue offering this as a service.
+[^collaboration]: May be skipped in collaboration through e.g. optimistic collateral.
 
 ## Our preference
 
