@@ -2,7 +2,7 @@
 
 *ultra sound relay — draft for builder feedback, 2026-07-31*
 
-## The problem
+## The forcing function
 
 Post-ePBS, a block only reaches the chain via a signed [`ExecutionPayloadBid`](https://github.com/ethereum/consensus-specs/blob/master/specs/gloas/beacon-chain.md#executionpayloadbid) — signed by a registered builder identity whose on-chain stake covers the bid value. This holds for **every** bid — including trusted ones.
 
@@ -24,13 +24,13 @@ Three ways to run a relay auction on top:
 | **Staked wallet**           | yours, key shared with us | ultra sound's      | yours, you operate     |
 | **Upfront capital**         | your stake                | optional           | your stake             |
 | **Submission API**          | unchanged[^payload]       | unchanged[^payload] | new[^native]          |
-| **When you pay**            | attestation[^attestation] | block inclusion    | attestation[^attestation] |
+| **When you pay**            | CL block inclusion[^attestation] | EL payload inclusion | CL block inclusion[^attestation] |
 | **Whom you pay**            | proposer                  | ultra sound        | proposer               |
 | **How you pay (trustless)** | CL withdrawal             | EL tx              | CL withdrawal          |
 | **How you pay (trusted)**   | EL tx                     | EL tx              | EL tx                  |
 | **Adjustments**[^adjustments] | yes                     | yes                | no                     |
 | **Payload publishing**      | relay and/or you          | only relay         | only you               |
-| **Relay simulation**        | optional[^simulation]     | required[^collaboration] | none                   |
+| **Relay simulation**        | optional[^simulation]     | required, may skip[^simulation][^collaboration] | none                   |
 
 [^payload]: Some payload details change irrespective of this design decision: the extended `execution_requests` (EIP-8282) and block access lists (EIP-7928).
 [^native]: Submissions become ePBS bids, constructed and signed by the builder.
@@ -41,7 +41,7 @@ Three ways to run a relay auction on top:
 
 ## Our preference
 
-A mediated auction (1 or 2), mainly because ePBS-native rules out adjustments: the bid value is fixed by your own signature, so the relay cannot re-sign it on your behalf. That said, we are open to also supporting ePBS-native submissions — though likely as a paid feature.
+A mediated auction (1 or 2), these let builders focus on building execution payloads and Ultra Sound be useful in handling the rest. In addition, ePBS-native rules out adjustments which benefit bigger builders and Ultra Sound. That said, we are open to supporting ePBS-native submissions, though likely at a minimum, free service level, or paid higher service level.
 
 ## Status
 
