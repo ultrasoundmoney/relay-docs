@@ -87,3 +87,11 @@ when a proposer registration was last received. complements the standard `valida
 ## /ultrasound/v1/data/adjustments
 
 non-standard. pre-adjustment values for adjusted bids. see [bid-adjustment.md](bid-adjustment.md).
+
+## /ultrasound/v1/data/disallow
+
+non-standard. the ofac disallow list the relay currently filters against, as a json array of execution addresses. takes no parameters.
+
+```json
+["0x098B716B8Aaf21512996dC57EB0615e2383E2f96", "0xa0e1c89Ef1a489c9C7dE96311eD5Ce5D32c20E4B", "..."]
+```

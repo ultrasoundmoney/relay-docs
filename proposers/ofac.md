@@ -1,7 +1,13 @@
 # ofac
 
-we currently track ofac sanctioned addresses in our [ofac-ethereum-addresses](https://github.com/ultrasoundmoney/ofac-ethereum-addresses) repo and update it whenever we notice a new address has been added.
+the list of ofac sanctioned addresses the relay currently filters against is served live by the data api:
 
-we're in the process of setting up a process to update our list every hour. if you're a builder we'll provide instructions in the builder section for how to retrieve our latest list automatically.
+```bash
+https://relay-analytics.ultrasound.money/ultrasound/v1/data/disallow
+```
 
-if you are an operator with strict requirements and want to know if the above has been implemented. please contact us: [https://t.me/ultrasoundrelay](https://t.me/ultrasoundrelay) or email [contact@ultrasound.money](mailto:contact@ultrasound.money).
+it returns a json array of execution addresses. see [data-api.md](../builders/data-api.md) for the rest of the data api.
+
+the [ofac-ethereum-addresses](https://github.com/ultrasoundmoney/ofac-ethereum-addresses) repo previously used to track these addresses is deprecated in favor of the endpoint above.
+
+if you are an operator with strict requirements and have questions, please contact us: [https://t.me/ultrasoundrelay](https://t.me/ultrasoundrelay) or email [contact@ultrasound.money](mailto:contact@ultrasound.money).
