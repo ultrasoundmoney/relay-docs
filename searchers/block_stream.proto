@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package ultrasound.blockstream.v1;
+
+service BlockStream {
+  rpc NewBlocks(NewBlocksRequest) returns (stream Block) {}
+}
+
+message NewBlocksRequest {}
+
+message Block {
+  string hash = 1;
+  BlockHeader header = 2;
+  repeated bytes raw_txs = 3;
+  repeated Withdrawal withdrawals = 4;
+}
+
+message BlockHeader {
+  string parent_hash = 1;
+  string miner = 2;
+  string state_root = 3;
+  string receipts_root = 4;
+  string logs_bloom = 5;
+  string number = 6;
+  string gas_limit = 7;
+  string gas_used = 8;
+  string timestamp = 9;
+  string extra_data = 10;
+  string mix_hash = 11;
+  string base_fee_per_gas = 12;
+  string blob_gas_used = 13;
+  string excess_blob_gas = 14;
+  string parent_beacon_root = 15;
+  string sha3_uncles = 16;
+  string nonce = 17;
+  string difficulty = 18;
+}
+
+message Withdrawal {
+  string index = 1;
+  string validator_index = 2;
+  string address = 3;
+  string amount = 4;
+}
