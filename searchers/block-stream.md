@@ -4,7 +4,7 @@ A low-latency gRPC stream of new Ethereum blocks.
 
 The API is live and in active use. Users report it is the fastest block stream available to them for a large share of slots. Detailed performance data is available privately on request.
 
-Blocks are streamed similar to bloXroute's [bdnBlocks](https://docs.bloxroute.com/eth/streams/blocks-streams/bdnblocks). Blocks which are not valid for gossiping according to a consensus node are not pushed by this endpoint. These blocks are signed by the proposer, but may in extremely rare cases still contain an invalid EL payload. Treat it as an early view of new blocks, not as canonical chain data.
+Blocks are streamed similar to bloXroute's [bdnBlocks](https://docs.bloxroute.com/eth/streams/blocks-streams/bdnblocks). Blocks which a CL refuses to gossip are not shared by this endpoint either. These blocks are signed by the proposer but may in extremely rare cases still contain an invalid EL payload.
 
 Transactions are delivered raw and unparsed, in block order.
 
