@@ -1,35 +1,35 @@
-# block stream
+# Block stream
 
-a low-latency gRPC stream of new Ethereum blocks.
+A low-latency gRPC stream of new Ethereum blocks.
 
-the API is live and in active use. users report it is the fastest block stream available to them for a large share of slots. detailed performance data is available privately on request.
+The API is live and in active use. Users report it is the fastest block stream available to them for a large share of slots. Detailed performance data is available privately on request.
 
-blocks are streamed before they have been validated, similar to bloXroute's [bdnBlocks](https://docs.bloxroute.com/eth/streams/blocks-streams/bdnblocks) stream. a block on this stream may never reach the chain. treat it as an early view of new blocks, not as canonical chain data.
+Blocks are streamed before they have been validated, similar to bloXroute's [bdnBlocks](https://docs.bloxroute.com/eth/streams/blocks-streams/bdnblocks) stream. A block on this stream may never reach the chain. Treat it as an early view of new blocks, not as canonical chain data.
 
-transactions are delivered raw and unparsed, in block order.
+Transactions are delivered raw and unparsed, in block order.
 
-access is by token. request one from [@ultrasoundrelay](https://t.me/ultrasoundrelay) or [contact@ultrasound.money](mailto:contact@ultrasound.money).
+Access is by token. Request one from [@ultrasoundrelay](https://t.me/ultrasoundrelay) or [contact@ultrasound.money](mailto:contact@ultrasound.money).
 
-## endpoint
+## Endpoint
 
 | | |
 |---|---|
-| address | `block-stream-jp.ultrasound.money` |
-| service | `ultrasound.blockstream.v1.BlockStream` |
-| method | `NewBlocks`, server streaming |
-| auth | `authorization` metadata header carrying your token |
+| Address | `block-stream-jp.ultrasound.money` |
+| Service | `ultrasound.blockstream.v1.BlockStream` |
+| Method | `NewBlocks`, server streaming |
+| Auth | `authorization` metadata header carrying your token |
 
-the endpoint is currently only served from Tokyo. we are planning to expand it to other regions (eu/us), contact us for support in other regions.
+The endpoint is currently only served from Tokyo. We are planning to expand it to other regions (EU/US). Contact us for support in other regions.
 
-## schema
+## Schema
 
-the service is defined in [`block_stream.proto`](block_stream.proto).
+The service is defined in [`block_stream.proto`](block_stream.proto).
 
-## connection settings
+## Connection settings
 
-the server accepts and sends zstd compression. enable it if your client supports it.
+The server accepts and sends zstd compression. Enable it if your client supports it.
 
-## example client
+## Example client
 
 ```bash
 pip install grpcio grpcio-tools
@@ -65,7 +65,7 @@ while True:
     time.sleep(3)
 ```
 
-## example block
+## Example block
 
 ```json
 {
@@ -107,6 +107,6 @@ while True:
 
 `rawTxs` are bytes on the wire; they appear base64-encoded here only because this is the JSON rendering.
 
-## questions
+## Questions
 
-[@ultrasoundrelay on telegram](https://t.me/ultrasoundrelay) or [contact@ultrasound.money](mailto:contact@ultrasound.money).
+[@ultrasoundrelay on Telegram](https://t.me/ultrasoundrelay) or [contact@ultrasound.money](mailto:contact@ultrasound.money).
