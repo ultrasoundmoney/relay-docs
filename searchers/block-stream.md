@@ -2,6 +2,8 @@
 
 a low-latency gRPC stream of new Ethereum blocks.
 
+the API is live and in active use. users report it is the fastest block stream available to them for a large share of slots. detailed performance data is available privately on request.
+
 blocks are streamed before they have been validated, similar to bloXroute's [bdnBlocks](https://docs.bloxroute.com/eth/streams/blocks-streams/bdnblocks) stream. a block on this stream may never reach the chain. treat it as an early view of new blocks, not as canonical chain data.
 
 transactions are delivered raw and unparsed, in block order.
