@@ -29,6 +29,10 @@ these results describe the evaluation window, not a service-level guarantee.
 - predictions do not include network latency from the builder to the relay or the low-millisecond processing time before a received bid becomes eligible in the auction;
 - some slots receive no proposer request, so no live request update follows the pre-slot prediction.
 
+## connection limits
+
+up to 8 simultaneous connections per source IP, per geo. connection attempts beyond that are rejected with HTTP 429.
+
 ## access
 
 access is available as a paid add-on. pricing has not settled; after a free trial, the current price is $2,000/month. stream URLs, authentication, and integration details are shared during onboarding. if you're interested, contact [@ultrasoundrelay](https://t.me/ultrasoundrelay) or [@smilingalex](https://t.me/smilingalex) directly on telegram.
