@@ -95,3 +95,59 @@ non-standard. the ofac disallow list the relay currently filters against, as a j
 ```json
 ["0x098B716B8Aaf21512996dC57EB0615e2383E2f96", "0xa0e1c89Ef1a489c9C7dE96311eD5Ce5D32c20E4B", "..."]
 ```
+
+## /relay/v1/data/merged_blocks
+
+not part of the relay specs. block merging results for a single slot, matching the shape titan serves at the same path.
+
+| parameter | description |
+|---|---|
+| `slot` | required, a specific slot |
+
+returns one entry per merged block we built for that slot, not only the one delivered, ordered by `proposer_value` descending. slots we did not merge return `[]`.
+
+| field | description |
+|---|---|
+| `original_block_hash` | hash of the base block before merging |
+| `block_hash` | hash of the resulting merged block |
+| `original_value` | value of the base block before merging |
+| `proposer_value` | value paid to the proposer for the merged block |
+| `total_merged_value` | value added by the merged in orders, the sum of every `contribution` |
+| `base_builder_revenue` | the base block builder's share of the merged value |
+| `relay_revenue` | the relay's share of the merged value |
+| `original_tx_count`, `merged_tx_count` | transaction count before and after merging |
+| `original_blob_count`, `merged_blob_count` | blob count before and after merging |
+| `original_gas_used`, `merged_gas_used` | gas used before and after merging |
+| `builder_inclusions` | contributing builders, keyed by coinbase. `contribution` is the value they added, `revenue` their share of it, `txs` the transaction hashes appended to the base block |
+
+```json
+[
+  {
+    "slot": "15184509",
+    "block_number": "25946559",
+    "original_block_hash": "0x292fc1ec652098c5e44cf1b584c53d8c14bf5a850ca5816fdfb070a90a13a3f7",
+    "block_hash": "0x9fb4e6dd48d7f9905f596e3287c5f22f029056730ece34361e6e29cd167984f5",
+    "original_value": "11597027056460525",
+    "proposer_value": "11628962247064035",
+    "total_merged_value": "143878148154040",
+    "base_builder_revenue": "31935190603510",
+    "relay_revenue": "31935190603510",
+    "original_tx_count": "380",
+    "merged_tx_count": "386",
+    "original_blob_count": "4",
+    "merged_blob_count": "4",
+    "original_gas_used": 36764446,
+    "merged_gas_used": 37242697,
+    "builder_inclusions": {
+      "0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97": {
+        "contribution": "143878148154040",
+        "revenue": "31935190603510",
+        "txs": [
+          "0x84516dcb997ba8b0155be3b078669d9371c3836244eaac57e8a811e859fb8bc9",
+          "0xbd5d00770d957be3a1bfe7ce2988421ce09b4f5f9b14ff0c3b7bc7bdfe5f7e3e"
+        ]
+      }
+    }
+  }
+]
+```
