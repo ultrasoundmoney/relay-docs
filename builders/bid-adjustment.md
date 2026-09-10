@@ -52,10 +52,16 @@ Enabled by `?adjustments=1` and by including an `adjustment_data` object in the 
 * `builder_address` is the usual builder address that pays the proposer in the last transaction of the block. When we adjust a bid, this transaction is overwritten by a transaction from the collateral account `fee_payer_address`. If we don't adjust the bid, `builder_address` pays the proposer as per usual.
 * `fee_payer_address` is an account which holds the ETH used by the relay to pay the fee recipient. Builders fund this account to use the feature. All adjusted bids are paid from this address.
 * `fee_recipient_address` is the proposer's fee recipient.
-* `placeholder_transaction_proof` is the merkle proof for the last transaction in the block, which will be overwritten with a payment from `fee_payer` to `fee_recipient` if we adjust the bid.
-* `placeholder_receipt_proof` is the merkle proof for the receipt of the placeholder transaction. It's required for adjusting payments to contract addresses.
+* `placeholder_transaction_proof` is the merkle proof for the last transaction in the block, which will be overwritten with a payment from `fee_payer` through the payment forwarder to `fee_recipient` if we adjust the bid.
+* `placeholder_receipt_proof` is the merkle proof for the receipt of the placeholder transaction. The receipt is reused as is; the proof lets us recompute the receipts root.
 
-Note that we rely on the `gas_limit` of the payout transaction being strictly equal to `gas_used`, i.e. 21000 for EOA recipient, and equal to `gas_used` during execution for contract recipients.
+Note that we rely on the `gas_limit` of the payout transaction being strictly equal to `gas_used` (V1/V2). V3 supplies `placeholder_gas_used` instead.
+
+### Placeholder payment shape
+
+Only one payment shape is adjustable: a call to the payment forwarder `0xFEEEEEE44046c3f61a8CC081E0918eF0de0a7ffC` with calldata `[4-byte slot timestamp][20-byte fee recipient]`, the full bid in `value`. The forwarder checks the timestamp against the block's and forwards the value with `SELFDESTRUCT`, so a relay-signed replacement is bound to its slot and cannot be replayed after a reorg or missed slot.
+
+A plain transfer to the fee recipient, or any other call, is not adjusted: the bid is served as submitted with the `indirect-payment` loss hint, and submissions in `Testing` adjustment status are rejected with a 400.
 
 ### Computing the adjustment data
 
@@ -94,7 +100,7 @@ pub struct AdjustmentDataV3 {
     pub el_placeholder_transaction_proof: Vec<Bytes>,
     pub cl_placeholder_transaction_proof: Vec<B256>,
     pub el_placeholder_receipt_proof: Vec<Bytes>,
-    pub pre_payment_logs_bloom: Bloom,
+    pub pre_payment_logs_bloom: Bloom, // accepted for compatibility, no longer read
     pub placeholder_gas_used: u64,
 }
 
