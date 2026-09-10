@@ -98,6 +98,8 @@ struct BlobItem {
 
 The transaction hashes are directly reusing the `transaction` field in the `ExecutionPayload`. To enable block deltas make sure to add a `x-hydrate` header to the submission.
 
+We only accept dehydrated submissions from authenticated builders. Send your `X-Api-Token` header alongside `x-hydrate`. Dehydrated submissions without a valid token are rejected with `401`.
+
 ## Bid Adjustments
 
 see: [bid-adjustment.md](bid-adjustment.md)
