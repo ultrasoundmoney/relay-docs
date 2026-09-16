@@ -29,6 +29,26 @@ https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4
 https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay-filtered.ultrasound.money
 ```
 
+## direct regional connections (advanced)
+
+for most operators, use `relay.ultrasound.money` or `relay-filtered.ultrasound.money`. Cloudflare attempts to route these hostnames to the appropriate region using geo-based DNS resolution.
+
+experienced staking operators who know which region is closest to the server their proposer connects from can instead configure a direct regional endpoint. the following hostnames are available on mainnet:
+
+| region | unfiltered | filtered (OFAC) |
+| --- | --- | --- |
+| europe | `relay-eu.ultrasound.money` | `relay-filtered-eu.ultrasound.money` |
+| united states | `relay-us.ultrasound.money` | `relay-filtered-us.ultrasound.money` |
+| japan | `relay-jp.ultrasound.money` | `relay-filtered-jp.ultrasound.money` |
+
+replace only the hostname in your mainnet relay URL, keeping `https://` and the same relay pubkey. for example, the unfiltered europe URL is:
+
+```text
+https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay-eu.ultrasound.money
+```
+
+**choose only one ultra sound endpoint per connecting server: either the default hostname or one regional hostname, with your intended filtering preference. configuring the wrong region or adding multiple ultra sound endpoints is likely to hurt proposal performance and reduce rewards.** a regional endpoint replaces the default endpoint in your configuration. choose based on the location of the server making requests to the relay, not your operator's office or headquarters. if you're unsure, use the default hostname.
+
 ## faq
 
 <details>
@@ -52,6 +72,8 @@ no, please don't. the URL is treated as a stated preference. a config value if y
 <summary>how many relays should i add, i see there are a handful available?</summary>
 
 this is ultimately up to the operator. we'll offer our highest bid for a given slot and they'll offer theirs. your sidecar will automatically select the highest. we recommend adding several so we are forced to offer our best bids. several public dashboards exist like [relayscan.io](https://relayscan.io/) or [rated.network](https://explorer.rated.network/relays?network=mainnet&timeWindow=30d) to show how many slots different relays have the highest bid.
+
+this recommendation is about different relay operators. use only one ultra sound endpoint, as explained under [direct regional connections](#direct-regional-connections-advanced).
 
 </details>
 

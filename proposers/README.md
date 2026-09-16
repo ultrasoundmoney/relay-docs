@@ -18,6 +18,8 @@ https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f
 https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-filtered-hoodi.ultrasound.money
 ```
 
+advanced operators can also use [direct regional connections](connection-guide.md#direct-regional-connections-advanced). for most operators, the default URLs above are recommended; choosing the wrong region or configuring multiple ultra sound endpoints is likely to hurt proposal performance and reduce rewards.
+
 ## index
 
 - [connection guide](connection-guide.md) — picking a sidecar, choosing a URL, FAQ.
