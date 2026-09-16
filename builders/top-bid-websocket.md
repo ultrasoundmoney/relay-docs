@@ -8,7 +8,7 @@ Note: at times, multiple parent blocks are reasonable to build on due to a split
 
 ## v1
 
-Streams out the auction's top bid: the highest bid known to an auction instance among bids submitted to that instance and those forwarded from other auction instances. Since 2026-09-14 this is the same bid v2 streams; v1 only differs in encoding (millisecond timestamps).
+Streams out the auction's top bid: the highest bid known to an auction instance among bids submitted to that instance and those forwarded from other auction instances. This is the same bid v2 streams; v1 only differs in encoding (millisecond timestamps).
 
 Endpoints (also available on the respective direct auction hosts):
 * `ws://relay-builders-eu.ultrasound.money/ws/v1/top_bid`
