@@ -15,19 +15,12 @@ When selecting a URL to choices are required.
 1. Which network is the proposer on?
 2. Does this proposer require every block offered has been filtered for OFAC transactions. For details on how we handle OFAC see [ofac.md](ofac.md).
 
-```bash
-# Hoodi - unfiltered
-https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-hoodi.ultrasound.money
+Copy the link address from the table to get the full relay URL, including its pubkey.
 
-# Hoodi - filtered
-https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-filtered-hoodi.ultrasound.money
-
-# Mainnet - unfiltered
-https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay.ultrasound.money
-
-# Mainnet - filtered
-https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay-filtered.ultrasound.money
-```
+| Network | Unfiltered | Filtered (OFAC) |
+| --- | --- | --- |
+| Hoodi | [relay-hoodi.ultrasound.money](https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-hoodi.ultrasound.money) | [relay-filtered-hoodi.ultrasound.money](https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-filtered-hoodi.ultrasound.money) |
+| Mainnet | [relay.ultrasound.money](https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay.ultrasound.money) | [relay-filtered.ultrasound.money](https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay-filtered.ultrasound.money) |
 
 ## Direct regional connections (advanced)
 
