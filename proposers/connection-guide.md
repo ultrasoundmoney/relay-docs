@@ -40,56 +40,32 @@ Replace only the hostname in your mainnet relay URL, keeping `https://` and the 
 https://0xa1559ace749633b997cb3fdacffb890aeebdb0f5a3b6aaa7eeeaf1a38af0a8fe88b9e4b1f61f236d2e64d95733327a62@relay-eu.ultrasound.money
 ```
 
-**Choose only one Ultra Sound endpoint per connecting server: either the default hostname or one regional hostname, with your intended filtering preference. Configuring the wrong region or adding multiple Ultra Sound endpoints is likely to hurt proposal performance and reduce rewards.** A regional endpoint replaces the default endpoint in your configuration. Choose based on the location of the server making requests to the relay, not your operator's office or headquarters. If you're unsure, use the default hostname.
+Choose **only one Ultra Sound endpoint** per connecting server: either the default hostname or one regional hostname, with your intended filtering preference. Configuring the wrong region or adding multiple Ultra Sound endpoints is likely to hurt proposal performance and reduce rewards. A regional endpoint replaces the default endpoint in your configuration. Choose based on the location of the server making requests to the relay, not your operator's office or headquarters. If you're unsure, use the default hostname.
 
 ## FAQ
 
-<details>
-
-<summary>Should I add filtered vs non-filtered?</summary>
+### Should I add filtered vs non-filtered?
 
 Several parties, usually US staking operators, have asked us to, in their slots, only accept blocks from builders which have been filtered for transactions containing addresses on the US OFAC sanctions list. What violation or compliance look like for you we cannot help you with. This is not legal advice. If you require filtering, the filtered URL is available.
 
-</details>
+### Is there a benefit to adding both filtered and non-filtered URLs?
 
-<details>
+No, please don't. The URL is treated as a stated preference. A config value if you will. Your block building sidecar will periodically send a registration to our relay. Adding both URLs means we see the same proposer pubkey requesting both, conflicting, preferences. As we cannot follow both, our relay will assume unfiltered was the intended preference.
 
-<summary>Is there a benefit to adding both filtered and non-filtered URLs?</summary>
-
-No, please don't. The URL is treated as a stated preference. A config value if you will. Your block building sidecar will periodically send a registration to our relay. Adding both URLs means we see the same proposer pubkey requesting both, _conflicting_, preferences. As we cannot follow both, our relay will assume _unfiltered_ was the intended preference.
-
-</details>
-
-<details>
-
-<summary>How many relays should I add, I see there are a handful available?</summary>
+### How many relays should I add, I see there are a handful available?
 
 This is ultimately up to the operator. We'll offer our highest bid for a given slot and they'll offer theirs. Your sidecar will automatically select the highest. We recommend adding several so we are forced to offer our best bids. Several public dashboards exist like [relayscan.io](https://relayscan.io/) or [rated.network](https://explorer.rated.network/relays?network=mainnet&timeWindow=30d) to show how many slots different relays have the highest bid.
 
 This recommendation is about different relay operators. Use only one Ultra Sound endpoint, as explained under [direct regional connections](#direct-regional-connections-advanced).
 
-</details>
-
-<details>
-
-<summary>The sidecar I'm setting up offers options to configure timeouts to improve bid value, what is a good value to set?</summary>
+### The sidecar I'm setting up offers options to configure timeouts to improve bid value, what is a good value to set?
 
 This is a complicated topic. Our relay does a lot of clever stuff to try and work with whatever value you set. Offering the highest bid possible within your deadline, without missing any slots. If you're eager to find the best possible values and get the highest possible bids, we don't have a comprehensive guide at the moment. Come talk to us: [https://t.me/ultrasoundrelay](https://t.me/ultrasoundrelay).
 
-</details>
-
-<details>
-
-<summary>Why the long pubkey in the URL?</summary>
+### Why the long pubkey in the URL?
 
 Your client will use this information to verify any bids it receives are signed with that pubkey, i.e. came from the same party that wrote these docs.
 
-</details>
-
-<details>
-
-<summary>I have a different question</summary>
+### I have a different question
 
 [https://t.me/ultrasoundrelay](https://t.me/ultrasoundrelay)
-
-</details>
