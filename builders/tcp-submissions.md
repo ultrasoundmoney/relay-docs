@@ -2,7 +2,7 @@
 
 The ultra sound relay accepts bid submissions over TCP for latency-sensitive builders. Keep one TCP connection open per builder pubkey and stream submissions over it.
 
-TCP submissions support everything HTTP does, plus compact v2 dehydrated submissions and merging data. We recommend v2: it is fewer bytes to send for your builder and fewer to process for our relay.
+TCP submissions support everything HTTP does except non-cancellable bids, plus compact v2 dehydrated submissions and merging data. We recommend v2: it is fewer bytes to send for your builder and fewer to process for our relay.
 
 ## Compared to HTTP
 
