@@ -35,6 +35,7 @@ submission optimizations:
 - [optimistic relaying](optimistic-relaying-builder-guide.md) — collateral-backed asynchronous simulation.
 - [missed slot reimbursement](../proposers/missed-slot-reimbursement.md) — what an on-chain incident costs and who pays.
 - [optimistic v3](optimistic-v3.md) — header-only V3 submissions (in testing).
+- [tcp submissions](tcp-submissions.md): the fastest way to submit, one persistent connection per pubkey, with v2 dehydrated submissions and merging data.
 - [bid adjustment](bid-adjustment.md) — capture latency-driven bid delta as kickback.
 - [top bid websocket](top-bid-websocket.md) — stream of the current top bid.
 - [deadline prediction api](deadline-prediction-api.md) — paid stream of predicted and live-refined auction deadlines.
