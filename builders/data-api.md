@@ -151,3 +151,48 @@ returns one entry per merged block we built for that slot, not only the one deli
   }
 ]
 ```
+
+## /relay/v1/data/merged_txs
+
+not part of the relay specs. whether a transaction offered for merging made it into the merged block we delivered for its slot, and if not, why.
+
+| parameter | description |
+|---|---|
+| `slot` | required, a specific slot |
+| `tx_hash` | required, the transaction hash |
+
+only slots where we delivered a merged block have records, and only for transactions offered as mergeable orders. the base block's own transactions, slots without a delivered merged block and transactions we never received return `404`.
+
+| field | description |
+|---|---|
+| `merged` | whether the transaction is in the delivered merged block |
+| `block_hash` | the delivered merged block, only when merged |
+| `base_block_hash` | the base block of the delivered merged block, only when not merged |
+| `reason` | why it was left out, only when not merged |
+
+| reason | description |
+|---|---|
+| `zero_payment` | the order paid nothing to the block's coinbase |
+| `out_of_space` | not enough gas or blob space left in the block |
+| `replaced` | a later submission from the builder dropped this latest-only order |
+| `invalid` | the order failed simulation, for example a transaction reverted that was not allowed to. also covers transactions touching an ofac sanctioned address when the proposer filters |
+| `duplicate` | the transaction was already in the block |
+
+```json
+{
+  "slot": "15371904",
+  "tx_hash": "0x453791119c33984392a5a412648976823f1a545d8429a77ca816c1e6901f0ef0",
+  "block_hash": "0xa6d2b3f79bb016b4dce7adc289912ce08d59a482d04b19439ae3fce242df5250",
+  "merged": true
+}
+```
+
+```json
+{
+  "slot": "15371904",
+  "tx_hash": "0x0599a38fd04fcd1220455f163f39d7917c4a1f8ffa08d7c52d5298127531a833",
+  "base_block_hash": "0xb1de5abb9c01a6648866e3e8ab74ee3f13f91620e4059ecb495f458f32ce1663",
+  "merged": false,
+  "reason": "duplicate"
+}
+```
