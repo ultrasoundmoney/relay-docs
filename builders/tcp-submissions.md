@@ -12,6 +12,8 @@ TCP submissions support everything HTTP does except non-cancellable bids, plus c
 
 ## Getting started
 
+We expect to charge $3,000/month for dedicated TCP access, but you're welcome to try it for free. Contact us on telegram to get started.
+
 1. Ask us on telegram for an API key and connection details. The API key is a UUID, separate from your HTTP `X-Api-Token`.
 2. Send a registration frame with your API key and pubkey.
 3. Stream submissions, and read the responses as they come back.

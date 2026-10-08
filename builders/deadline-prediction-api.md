@@ -35,4 +35,4 @@ up to 8 simultaneous connections per source IP, per geo. connection attempts bey
 
 ## access
 
-access is available as a paid add-on. pricing has not settled; after a free trial, the current price is $2,000/month. stream URLs, authentication, and integration details are shared during onboarding. if you're interested, contact [@ultrasoundrelay](https://t.me/ultrasoundrelay) or [@smilingalex](https://t.me/smilingalex) directly on telegram.
+access is available as a paid add-on. pricing has not settled; after a free trial, the current price is $1,400/month. stream URLs, authentication, and integration details are shared during onboarding. if you're interested, contact [@ultrasoundrelay](https://t.me/ultrasoundrelay) or [@smilingalex](https://t.me/smilingalex) directly on telegram.
