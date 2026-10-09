@@ -10,6 +10,16 @@
 6. Use http/2 or `Connection: keep-alive` if using http/1.
 7. TCP submissions: Latency-sensitive builders can also submit over a persistent TCP connection, with more compact v2 dehydrated submissions and merging data. See [tcp-submissions.md](tcp-submissions.md).
 
+## Clock synchronization
+
+Our auction hosts are configured to use the public [Amazon Time Sync Service](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configure-time-sync.html) at `time.aws.com`. We recommend builders use the same NTP source to help reduce clock drift relative to our auctions. Our chrony source configuration is:
+
+```conf
+pool time.aws.com iburst maxsources 4
+```
+
+AWS smears leap seconds, so avoid mixing it with non-smearing NTP sources and disable chrony's `leapsectz` directive when using this pool.
+
 ## URL
 
 ```bash
