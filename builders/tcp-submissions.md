@@ -147,6 +147,8 @@ Every submission frame gets one response frame. The payload is SSZ:
 | sequence number | u32 |
 | request id | 16 bytes UUID |
 | status | u8: `0` ok, `1` invalid request, `2` internal error |
-| error message | UTF-8 bytes, empty when ok |
+| error message | UTF-8 bytes |
+
+With status `0` the error message is empty, except for a bid below the floor, which gets `accepted bid below floor, skipped validation`, the same text as the HTTP 202. That bid is not simulated and does not enter the auction, see [floor-bid.md](floor-bid.md). With status `1` or `2` it is the same message as the HTTP 4xx or 5xx.
 
 Responses can arrive out of order, so match them by sequence number. You can include the request id when you ask us about a submission.

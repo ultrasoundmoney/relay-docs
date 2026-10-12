@@ -19,6 +19,8 @@ HTTP 202 Accepted
 accepted bid below floor, skipped validation
 ```
 
+over [tcp](tcp-submissions.md), where every bid is cancellable, the second case returns status `0` with the same text in the error message field.
+
 **this is a 202, not a rejection.** the request was well-formed and accepted; the relay simply skipped processing it because no value at-or-below the floor can affect the auction outcome. client-side log pipelines that key off the response body sometimes flag this as a failure — it isn't.
 
 ## related
