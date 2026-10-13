@@ -8,6 +8,10 @@ Blocks are streamed similar to bloXroute's [bdnBlocks](https://docs.bloxroute.co
 
 Transactions are delivered raw and unparsed, in block order.
 
+## Pricing and access
+
+Access currently costs $400/month. Feel free to contact us for a free trial to see whether the cost is justified for your use case.
+
 Access is by token. Request one from [@ultrasoundrelay](https://t.me/ultrasoundrelay) or [contact@ultrasound.money](mailto:contact@ultrasound.money).
 
 ## Endpoint
