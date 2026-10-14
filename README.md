@@ -6,7 +6,7 @@ documentation for the [ultra sound relay](https://relay.ultrasound.money).
 - **[builders](builders/)** — submitting blocks: URLs, auction details, optimistic relaying, bid adjustments, websockets, rate limits.
 - **[searchers](searchers/)** — fast access to live ethereum data.
 - **[researchers](researchers/)** — accessing relay data without proposing or building.
-- **[ePBS](epbs/)** — ultra sound's [post-ePBS view](epbs/post-epbs.md) on the block building pipeline and the [builder auction sketch](epbs/builder-auction.md) for Gloas.
+- **[ePBS](epbs/)** — ultra sound's [post-ePBS view](epbs/post-epbs.md) on the block building pipeline, the [Gloas builder auction](epbs/builder-auction.md) and the [Gloas builder API](epbs/gloas-builder-api.md).
 
 ## questions?
 
