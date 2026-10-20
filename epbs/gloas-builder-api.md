@@ -1,6 +1,6 @@
 # Gloas builder API
 
-*ultra sound relay — draft 2026-10-13. Companion to the [auction design](builder-auction.md).*
+*ultra sound relay — draft 2026-10-20. Companion to the [auction design](builder-auction.md).*
 
 How to submit blocks to the ultra sound relay on a Gloas (ePBS) network, and how to test on glamsterdam-devnet-8 today. Everything not mentioned here works as pre-ePBS ([builders](../builders/)).
 
@@ -48,23 +48,26 @@ Devnet host: `https://relay-plataberget.ultrasound.money` (hoodi and mainnet hos
 
 ## 3. Submission format
 
-`POST /relay/v1/builder/blocks` with `Content-Type: application/json` or `application/octet-stream` (SSZ). The slot is read first (`message.slot`; first 8 LE bytes in SSZ) and selects the gloas pipeline from the fork slot on. JSON rejects unknown fields.
+`POST /relay/v1/builder/blocks` with `Content-Type: application/json` or `application/octet-stream` (SSZ) and `Eth-Consensus-Version: gloas`. The header selects the gloas format as it selects every other fork's; without it the slot (`message.slot`; first 8 LE bytes in SSZ) decides from the fork slot on. A header that disagrees with the slot is rejected. JSON rejects unknown fields.
 
 ```text
 SubmitBlockRequestGloas {
-  message:                  BidTrace           // unchanged (slot, hashes, pubkeys,
-                                               // fee recipient, gas, value)
-  execution_payload:        ExecutionPayloadV3 // deneb shape
-  block_access_list:        bytes              // EIP-7928 RLP from your EL; hex in JSON
-  blobs_bundle:             BlobsBundle        // 128 cell proofs per blob; bodies required
-  execution_requests:       ExecutionRequests  // deposits, withdrawals, consolidations,
-                                               // builder_deposits, builder_exits (EIP-8282)
-  parent_beacon_block_root: bytes32            // EIP-4788 root the payload builds on
-  signature:                BLS                // over BidTrace, builder domain, unchanged
+  message:                  BidTrace          // unchanged (slot, hashes, pubkeys,
+                                              // fee recipient, gas, value)
+  execution_payload:        ExecutionPayload  // consensus gloas shape: the deneb fields, then
+                                              //   block_access_list: bytes   EIP-7928 RLP from
+                                              //                              your EL; hex in JSON
+                                              //   slot_number:       uint64  = message.slot
+  blobs_bundle:             BlobsBundle       // 128 cell proofs per blob; bodies required
+  execution_requests:       ExecutionRequests // deposits, withdrawals, consolidations,
+                                              // builder_deposits, builder_exits (EIP-8282)
+  parent_beacon_block_root: bytes32           // EIP-4788 root the payload builds on
+  signature:                BLS               // over BidTrace, builder domain, unchanged
 }
 ```
 
-- SSZ: the container above, fields in this order; `execution_payload` as a plain `ExecutionPayloadV3`.
+- SSZ: the container above, fields in this order; `execution_payload` is the consensus-specs gloas `ExecutionPayload` (block access list and slot number inside), the layout helix accepts as `SignedBidSubmissionGloas`.
+- `execution_payload.slot_number` must equal `message.slot`.
 - `parent_beacon_block_root` must match the payload attributes our beacon nodes announced for `(slot, parent_hash)`; after an empty slot `(slot, parent_hash)` alone no longer identifies the block, which is why it is explicit.
 - The block access list is validated by execution: the simulator rebuilds it and compares hashes.
 
@@ -89,8 +92,10 @@ SubmitBlockRequestGloas {
 | 400 `bid type not supported yet` | `native` |
 | 400 `dehydrated and mergeable submissions are not supported for gloas slots` | drop `X-Hydrate` / `X-Mergeable` |
 | 400 `adjustable submissions must be trusted bids, got ...` | `?adjustments=1` on a trustless bid |
+| 400 `invalid eth-consensus-version header. expected one of: ...` | unknown `Eth-Consensus-Version` |
+| 400 `invalid block submission version, expected gloas` (or `expected fulu`) | `Eth-Consensus-Version` disagrees with the slot: pre-gloas header on a gloas slot, or `gloas` before the fork |
 | 400 `failed to parse gloas json/ssz payload: ...` | shape error; JSON rejects unknown fields |
-| 400 `slot is before glamsterdam` | gloas format on a pre-fork slot |
+| 400 `slot_number N does not match message.slot M` | `execution_payload.slot_number` disagrees with the bid trace |
 | 400 `blob bodies are required` / `expected 128 cell proofs per blob` | |
 | 400 `unknown parent beacon block root` | not the root announced for `(slot, parent_hash)` |
 | 400 `could not find slot duty` / `proposer pubkey does not match slot duty` / `fee recipient mismatch` | lookahead mismatch |
