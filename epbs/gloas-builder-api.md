@@ -94,9 +94,11 @@ SignedBidSubmissionGloas {
 |----------------------------------------------|------------------------------------|
 | 400 `invalid x-bid-type header, expected one of: ...` | not one of the four types |
 | 400 `bid type not supported yet` | `native` |
-| 400 `dehydrated and mergeable submissions are not supported for gloas slots` | drop `X-Hydrate` / `X-Mergeable` |
+| 400 `mergeable submissions are not supported for gloas slots` | drop `X-Mergeable` |
+| 401 `dehydrated submissions require an api token` | `X-Hydrate` without `X-Api-Token` |
 | 400 `adjustable submissions must be trusted bids, got ...` | `?adjustments=1` on a trustless bid |
 | 400 `invalid eth-consensus-version header. expected one of: ...` | unknown `Eth-Consensus-Version` |
+| 400 `gloas submissions are not enabled` | `gloas` header on a relay without the fork configured |
 | 400 `invalid block submission version, expected gloas` (or `expected fulu`) | `Eth-Consensus-Version` disagrees with the slot: pre-gloas header on a gloas slot, or `gloas` before the fork |
 | 400 `failed to parse gloas json/ssz payload: ...` | shape error; JSON rejects unknown fields |
 | 400 `slot_number N does not match message.slot M` | `execution_payload.slot_number` disagrees with `message.trace.slot` |
