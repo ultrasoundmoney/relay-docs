@@ -19,7 +19,7 @@ Devnet host: `https://relay-plataberget.ultrasound.money` (hoodi and mainnet hos
 
 - `X-Api-Token`: your existing token; on the devnet your **hoodi** token works. Authenticated: 120 MiB of submissions per slot. Without a token: 50 requests/min per IP, attributed to builder `unknown`.
 - Unknown builder pubkeys are accepted (no allowlist) and treated as non-optimistic.
-- Optional headers as before: `X-Sequence` (monotonic per slot), `X-Hydrate` and `X-Mergeable` are **not** supported on gloas slots yet (400).
+- Optional headers as before: `X-Sequence` (monotonic per slot); `X-Hydrate` (dehydrated submissions, needs `X-Api-Token`) is available on the devnet, format on request while it settles; `X-Mergeable` is **not** supported on gloas slots (400).
 
 ## 2. Bid types and payment
 
@@ -123,9 +123,8 @@ SignedBidSubmissionGloas {
 
 ## 7. Not supported yet, in planned order
 
-1. Dehydrated submissions (block deltas) — block access lists make bodies larger; we plan per-account dedup of the list.
-2. Header-only (v3) submissions — must carry the block access list to stay adjustable.
-3. Block merging.
+1. Header-only (v3) submissions — must carry the block access list to stay adjustable.
+2. Block merging.
 4. Native ePBS bids — depends on builder interest, see the design doc.
 
 ## 8. Devnet quick start (glamsterdam-devnet-8)
