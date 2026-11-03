@@ -4,7 +4,7 @@ As a proposer connecting itself is easy. You'll need one of the popular beacon s
 
 Commonly used are:
 
-* mev-boost - [https://github.com/flashbots/mev-boost](https://github.com/flashbots/mev-boost)
+* MEV-Boost - [https://github.com/flashbots/mev-boost](https://github.com/flashbots/mev-boost)
 * Vouch - [https://github.com/attestantio/vouch](https://github.com/attestantio/vouch)
 * Commit-Boost - [https://www.commit-boost.org/](https://www.commit-boost.org/)
 

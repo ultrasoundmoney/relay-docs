@@ -1,6 +1,6 @@
 # ePBS (Gloas) auction — builder integration
 
-*ultra sound relay — updated 2026-10-13 (first draft 2026-07-31). Feedback wanted, see the end.*
+*Ultra Sound relay — updated 2026-10-13 (first draft 2026-07-31). Feedback wanted, see the end.*
 
 ## The forcing function
 
@@ -11,13 +11,13 @@ Post-ePBS, a block only reaches the chain via a signed [`ExecutionPayloadBid`](h
 Three ways to run a relay auction on top:
 
 1. **Partially mediated**: you stake a builder wallet and share its key with us; builders submit blocks as today and the relay forms the on-chain bid, signed with *your* identity.
-2. **Fully mediated**: one shared staked wallet operated by ultra sound; you pay per included block, essentially as pre-ePBS.
+2. **Fully mediated**: one shared staked wallet operated by Ultra Sound; you pay per included block, essentially as pre-ePBS.
 3. **ePBS-native**: builders construct and sign valid ePBS bids themselves and send those to the relay.
 
 Independent of the design, a bid pays the proposer in one of two ways:
 
-- **trustless**: from the staked identity's CL balance, via the bid `value`.
-- **trusted**: inside the EL payload, as today, via `execution_payment`.
+- **Trustless**: from the staked identity's CL balance, via the bid `value`.
+- **Trusted**: inside the EL payload, as today, via `execution_payment`.
 
 ## Overview
 
@@ -26,18 +26,18 @@ Three bid types are implemented so far. Any design can carry trusted bids; for n
 <!-- small -->
 |                      | Trusted                 | Fully mediated          | Partially mediated      | ePBS-native             |
 |--------------------|---------------------------|---------------------------|------------------------|-----------------|
-| **Status**           | live (devnet)           | live (devnet)           | live (devnet)           | **not yet**[^native-status] |
-| **Bid signed by**    | relay                   | relay                   | relay (your key)        | **you**                 |
-| **Staked identity**  | relay's                 | relay's                 | **yours**               | yours                   |
-| **Key custody**      | relay                   | relay                   | **shared**              | you                     |
-| **Upfront capital**  | none                    | none                    | full max bid            | full max bid            |
-| **Submission API**[^payload] | unchanged       | unchanged               | unchanged               | **new**[^native]        |
-| **Paid in payload**  | proposer                | **relay**               | none                    | none                    |
-| **When you pay**[^attestation] | payload inclusion | payload inclusion   | block inclusion      | block inclusion         |
+| **Status**           | Live (devnet)           | Live (devnet)           | Live (devnet)           | **Not yet**[^native-status] |
+| **Bid signed by**    | Relay                   | Relay                   | Relay (your key)        | **You**                 |
+| **Staked identity**  | Relay's                 | Relay's                 | **Yours**               | Yours                   |
+| **Key custody**      | Relay                   | Relay                   | **Shared**              | You                     |
+| **Upfront capital**  | None                    | None                    | Full max bid            | Full max bid            |
+| **Submission API**[^payload] | Unchanged       | Unchanged               | Unchanged               | **New**[^native]        |
+| **Paid in payload**  | Proposer                | **Relay**               | None                    | None                    |
+| **When you pay**[^attestation] | Payload inclusion | Payload inclusion   | Block inclusion      | Block inclusion         |
 | **How you pay**      | EL tx                   | EL tx                   | CL withdrawal           | CL withdrawal           |
-| **Bid capped by**    | `max_execution_payment` | relay stake             | your stake              | your stake              |
-| **Adjustments**[^adjustments] | yes            | yes                     | yes                     | no                      |
-| **Payload reveal**   | relay                   | relay                   | relay                   | **you**                 |
+| **Bid capped by**    | `max_execution_payment` | Relay stake             | Your stake              | Your stake              |
+| **Adjustments**[^adjustments] | Yes            | Yes                     | Yes                     | No                      |
+| **Payload reveal**   | Relay                   | Relay                   | Relay                   | **You**                 |
 | **`X-Bid-Type`**[^header] | `trusted` (default) | `trustless-full`       | `trustless-partial`     |                         |
 <!-- /small -->
 
@@ -53,10 +53,10 @@ Three bid types are implemented so far. Any design can carry trusted bids; for n
 - **All types**: the payload gains the Glamsterdam EL fields — block access list (EIP-7928), extended execution requests (EIP-8282), explicit `parent_beacon_block_root`. Fork changes, not ePBS changes.
 - **`trusted`**: nothing else. Pay the proposer in the payload as today; adjustments as today. Only for proposers with a `max_execution_payment` in the lookahead.[^lookahead]
 - **`trustless-full`**: set the header; pay `message.value` to the relay wallet in the payload instead of the proposer. Nothing on-chain.
-- **`trustless-partial`**: set the header; no payload payment. Needs a gloas builder deposit and your key shared with us.
-- **Test now** on glamsterdam-devnet-8: `https://relay-plataberget.ultrasound.money`, your hoodi `X-Api-Token` works. Details, formats and rejections: [gloas builder API](gloas-builder-api.md).
-- **Not yet** on gloas: dehydrated submissions, header-only (v3), merging.
-- **hoodi** forks on 2026-10-26 17:42 UTC (epoch 132352); mainnet date to be announced.
+- **`trustless-partial`**: set the header; no payload payment. Needs a Gloas builder deposit and your key shared with us.
+- **Test now** on glamsterdam-devnet-8: `https://relay-plataberget.ultrasound.money`, your Hoodi `X-Api-Token` works. Details, formats and rejections: [Gloas builder API](gloas-builder-api.md).
+- **Not yet** on Gloas: dehydrated submissions, header-only (v3), merging.
+- **Hoodi** forks on 2026-10-26 17:42 UTC (epoch 132352); mainnet date to be announced.
 
 [^lookahead]: `/relay/v1/builder/validators`, `preferences.max_execution_payment` (gwei); absent means the proposer takes trustless bids only. Stake caps: `GET /ultrasound/v1/builder/bid_caps` (relay stake; with your `X-Api-Token` also your mapped stake).
 
@@ -67,4 +67,4 @@ Three bid types are implemented so far. Any design can carry trusted bids; for n
 3. **Priorities** — dehydration (block access lists make bodies bigger; per-account dedup planned), header-only, merging.
 4. **Payment flow** — anything in paying the relay wallet (`trustless-full`) or `execution_payment` (`trusted`) that doesn't fit your builder?
 
-Talk to us on telegram: [@ultrasoundrelay](https://t.me/ultrasoundrelay).
+Talk to us on Telegram: [@ultrasoundrelay](https://t.me/ultrasoundrelay).

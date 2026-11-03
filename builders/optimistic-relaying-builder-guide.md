@@ -1,6 +1,6 @@
-# optimistic relaying
+# Optimistic relaying
 
-An onboarding guide for builders interested in low-latency optimistic relaying with [the ultra sound relay](https://relay.ultrasound.money).
+An onboarding guide for builders interested in low-latency optimistic relaying with [the Ultra Sound relay](https://relay.ultrasound.money).
 
 **TLDR**
 
@@ -12,7 +12,7 @@ An onboarding guide for builders interested in low-latency optimistic relaying w
 
 ### Purpose
 
-This document outlines key aspects of optimistic relaying with the ultra sound relay. Optimistic relaying allows builders to significantly reduce the latency of their bid submissions through asynchronous simulation. For more detail see [the proposal](https://github.com/michaelneuder/opt-relay-docs/blob/main/proposal.md), [the implementation](https://github.com/flashbots/mev-boost-relay/pull/285), and the discussion in [MEV community call #0](https://collective.flashbots.net/t/mev-boost-community-call-0-23-feb-2023/1348).
+This document outlines key aspects of optimistic relaying with the Ultra Sound relay. Optimistic relaying allows builders to significantly reduce the latency of their bid submissions through asynchronous simulation. For more detail see [the proposal](https://github.com/michaelneuder/opt-relay-docs/blob/main/proposal.md), [the implementation](https://github.com/flashbots/mev-boost-relay/pull/285), and the discussion in [MEV community call #0](https://collective.flashbots.net/t/mev-boost-community-call-0-23-feb-2023/1348).
 
 ### Optimistic logic
 
@@ -39,7 +39,7 @@ Pubkey `0xcccccc` also has 0.99 ETH of collateral but `is_optimistic` is `false`
 
 ### Collateral
 
-Collateral for optimistic relaying must be posted to `relay.ultrasound.eth` from an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address. The maximum collateral per pubkey is currently 64 stETH—this value may be increased or decreased from time to time. The stETH reward paid by Lido is kept by ultra sound to fund the relay. If you prefer to send ETH, we reserve the right to stake and return your collateral 1:1, as stETH. Please contact us if you wish to stop optimistic relaying and have your collateral returned.
+Collateral for optimistic relaying must be posted to `relay.ultrasound.eth` from an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address. The maximum collateral per pubkey is currently 64 stETH—this value may be increased or decreased from time to time. The stETH reward paid by Lido is kept by Ultra Sound to fund the relay. If you prefer to send ETH, we reserve the right to stake and return your collateral 1:1, as stETH. Please contact us if you wish to stop optimistic relaying and have your collateral returned.
 
 ### Builder ID
 
@@ -53,7 +53,7 @@ When a bad bid is submitted, even if the bid does not get signed by the proposer
 
 ### On-chain incidents
 
-Optimistic relaying means a bad block can occasionally make it on-chain. When that happens ultra sound aims to help resolve the incident, with how much we cover depending on the cause:
+Optimistic relaying means a bad block can occasionally make it on-chain. When that happens Ultra Sound aims to help resolve the incident, with how much we cover depending on the cause:
 
 - **Foul play** — e.g. a builder paying themselves instead of the proposer in the last transaction, a safety fault. We will use the builder's collateral to compensate the proposer in full.
 - **Liveness failure** — no foul play, a rare bug or operational fault. We aim to compensate proposers up to 10 ETH of bid value on a best-effort basis. We hold ourselves to the same standard for liveness failures on our own side.

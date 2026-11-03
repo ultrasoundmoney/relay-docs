@@ -1,13 +1,13 @@
-# getting started
+# Getting started
 
 ## First steps
 
-1. Colocation: Locate your builder close to relays. The ultra sound relay is at OVH Roubaix (RBX), France, OVH Vint Hill (VIN), US, and Latitude Tokyo (TYO).
+1. Colocation: Locate your builder close to relays. The Ultra Sound relay is at OVH Roubaix (RBX), France, OVH Vint Hill (VIN), US, and Latitude Tokyo (TYO).
 2. Submission format: Submit your bids using SSZ (not JSON). If at all possible, use block deltas.
 3. Submission frequency: Receive an API token and bypass our free-for-all-tier rate limits. Top builders make a few thousand submissions per block landed. See [rate-limits.md](rate-limits.md).
-4. Optimistic relaying: This is a massive relay-side optimization where bids are processed optimistically, skipping simulation and saving on simulation latency. Almost all builders (22 of them!) have enabled optimistic relaying with the ultra sound relay—it's hard to compete without. For more detail see: [optimistic-relaying-builder-guide.md](optimistic-relaying-builder-guide.md).
+4. Optimistic relaying: This is a massive relay-side optimization where bids are processed optimistically, skipping simulation and saving on simulation latency. Almost all builders (22 of them!) have enabled optimistic relaying with the Ultra Sound relay—it's hard to compete without. For more detail see: [optimistic-relaying-builder-guide.md](optimistic-relaying-builder-guide.md).
 5. Top bid websocket: To make competitive bids a builder needs to be aware of the auction's bid-to-beat, the top bid. We offer a websocket to efficiently keep track. Read more here: [top-bid-websocket.md](https://github.com/ultrasoundmoney/docs/blob/main/top-bid-websocket.md).
-6. Use http/2 or `Connection: keep-alive` if using http/1.
+6. Use HTTP/2 or `Connection: keep-alive` if using HTTP/1.
 7. TCP submissions: Latency-sensitive builders can also submit over a persistent TCP connection, with more compact v2 dehydrated submissions and merging data. See [tcp-submissions.md](tcp-submissions.md).
 
 ## Clock synchronization
@@ -46,7 +46,7 @@ By default we use `received_at`, i.e. the timestamp at which we received your bi
 
 ## Transaction Filtering
 
-The ultra sound relay supports both transaction filtering and non-filtering proposers. A proposer's filtering preference is communicated in the `/relay/v1/builder/validators` response. Possible values are `none` for no filtering, and `ofac` for filtering according to  [ofac.md](../proposers/ofac.md). By default, the endpoint only returns proposers with filtering set to `none`. To receive both filtering and non-filtering proposers in the lookahead, add the following query parameter: `?filtering=true`. A block containing filtered addresses in a filtered slot leads to a simulation failure. Below is an example response.
+The Ultra Sound relay supports both transaction filtering and non-filtering proposers. A proposer's filtering preference is communicated in the `/relay/v1/builder/validators` response. Possible values are `none` for no filtering, and `ofac` for filtering according to  [ofac.md](../proposers/ofac.md). By default, the endpoint only returns proposers with filtering set to `none`. To receive both filtering and non-filtering proposers in the lookahead, add the following query parameter: `?filtering=true`. A block containing filtered addresses in a filtered slot leads to a simulation failure. Below is an example response.
 
 ```json
  {
@@ -113,5 +113,5 @@ We only accept dehydrated submissions from authenticated builders. Send your `X-
 
 ## Bid Adjustments
 
-see: [bid-adjustment.md](bid-adjustment.md)
+See: [bid-adjustment.md](bid-adjustment.md)
 

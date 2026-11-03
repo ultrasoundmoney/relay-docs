@@ -1,8 +1,8 @@
-# proposers
+# Proposers
 
-connect your proposer to the ultra sound relay to receive higher-paying blocks.
+Connect your proposer to the Ultra Sound relay to receive higher-paying blocks.
 
-## relay URLs
+## Relay URLs
 
 ```
 # mainnet - unfiltered
@@ -18,15 +18,15 @@ https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f
 https://0xb1559beef7b5ba3127485bbbb090362d9f497ba64e177ee2c8e7db74746306efad687f2cf8574e38d70067d40ef136dc@relay-filtered-hoodi.ultrasound.money
 ```
 
-advanced operators can also use [direct regional connections](connection-guide.md#direct-regional-connections-advanced). for most operators, the default URLs above are recommended; choosing the wrong region or configuring multiple ultra sound endpoints is likely to hurt proposal performance and reduce rewards.
+Advanced operators can also use [direct regional connections](connection-guide.md#direct-regional-connections-advanced). For most operators, the default URLs above are recommended; choosing the wrong region or configuring multiple Ultra Sound endpoints is likely to hurt proposal performance and reduce rewards.
 
-## index
+## Index
 
-- [connection guide](connection-guide.md) — picking a sidecar, choosing a URL, FAQ.
-- [ofac](ofac.md) — how the filtered URL is maintained.
+- [Connection guide](connection-guide.md) — picking a sidecar, choosing a URL, FAQ.
+- [OFAC](ofac.md) — how the filtered URL is maintained.
 - [get_header endpoint](get-header.md) — what to expect from `GET /eth/v1/builder/header/...` and which response codes mean what.
-- [missed slot reimbursement](missed-slot-reimbursement.md) — what we pay if a slot is missed for a header we delivered, and how it is calculated.
+- [Missed slot reimbursement](missed-slot-reimbursement.md) — what we pay if a slot is missed for a header we delivered, and how it is calculated.
 
-## questions?
+## Questions?
 
-ping us on telegram: [@ultrasoundrelay](https://t.me/ultrasoundrelay) or email [contact@ultrasound.money](mailto:contact@ultrasound.money).
+Ping us on Telegram: [@ultrasoundrelay](https://t.me/ultrasoundrelay) or email [contact@ultrasound.money](mailto:contact@ultrasound.money).

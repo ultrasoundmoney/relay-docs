@@ -1,23 +1,23 @@
 # Gloas builder API
 
-*ultra sound relay — draft 2026-10-20. Companion to the [auction design](builder-auction.md).*
+*Ultra Sound relay — draft 2026-10-20. Companion to the [auction design](builder-auction.md).*
 
-How to submit blocks to the ultra sound relay on a Gloas (ePBS) network, and how to test on glamsterdam-devnet-8 today. Everything not mentioned here works as pre-ePBS ([builders](../builders/)).
+How to submit blocks to the Ultra Sound relay on a Gloas (ePBS) network, and how to test on glamsterdam-devnet-8 today. Everything not mentioned here works as pre-ePBS ([builders](../builders/)).
 
 ## 1. Endpoints and auth
 
-Devnet host: `https://relay-plataberget.ultrasound.money` (hoodi and mainnet hosts stay as they are after their forks).
+Devnet host: `https://relay-plataberget.ultrasound.money` (Hoodi and mainnet hosts stay as they are after their forks).
 
 | Method / path | Purpose |
 |------------------------------------------------|----------------------------------|
 | `GET /relay/v1/builder/validators` | Lookahead: upcoming proposers with their effective preferences (fee recipient, gas limit, filtering, `max_execution_payment` when they accept trusted bids) |
 | `GET /ultrasound/v1/builder/bid_caps[?slot=N]` | Stake caps for trustless bids: the relay's available stake; with your `X-Api-Token`, your mapped wallets' too |
-| `POST /relay/v1/builder/blocks[?cancellations=1][&adjustments=1]` | Block submission (gloas format from the fork slot on) |
+| `POST /relay/v1/builder/blocks[?cancellations=1][&adjustments=1]` | Block submission (Gloas format from the fork slot on) |
 | `GET /relay/v1/data/bidtraces/builder_blocks_received?slot=N` | What we received and whether it simulated (v2: ns timestamps) |
 | `GET /ws/v1/top_bid`, `/ws/v2/top_bid` | Top-bid websocket, unchanged |
 | `GET /ultrasound/v1/auction/ip_test` | Connectivity check |
 
-- `X-Api-Token`: your existing token; on the devnet your **hoodi** token works. Authenticated: 120 MiB of submissions per slot. Without a token: 50 requests/min per IP, attributed to builder `unknown`.
+- `X-Api-Token`: your existing token; on the devnet your **Hoodi** token works. Authenticated: 120 MiB of submissions per slot. Without a token: 50 requests/min per IP, attributed to builder `unknown`.
 - Unknown builder pubkeys are accepted (no allowlist) and treated as non-optimistic.
 - Optional headers as before: `X-Sequence` (monotonic per slot); `X-Hydrate` (dehydrated submissions, needs `X-Api-Token`) is available on the devnet, format on request while it settles; `X-Mergeable` is **not** supported on gloas slots (400).
 
@@ -27,10 +27,10 @@ Devnet host: `https://relay-plataberget.ultrasound.money` (hoodi and mainnet hos
 
 | `X-Bid-Type` | You put in the payload | Relay wraps as | Proposer paid by | Needs |
 |------------|--------------------|--------------------|-----------------|------------------------------|
-| `trusted` | payment to `proposer_fee_recipient`, as pre-ePBS | `value = 0`, `execution_payment = value / 1e9` | you, in the payload | a proposer who accepts execution payments (a cap in their preferences); simulated unless you are optimistic |
-| `trustless-full` | payment of `message.value` to the **relay wallet** | `value = value / 1e9`, relay identity | relay, from its CL stake | nothing on-chain from you. **Start here.** |
-| `trustless-partial` | nothing | `value = value / 1e9`, **your** identity | you, from your CL builder stake | a gloas builder deposit + a mapping submission pubkey → staked pubkey on our side (ask us) |
-| `native` | — | — | — | not accepted yet |
+| `trusted` | Payment to `proposer_fee_recipient`, as pre-ePBS | `value = 0`, `execution_payment = value / 1e9` | You, in the payload | A proposer who accepts execution payments (a cap in their preferences); simulated unless you are optimistic |
+| `trustless-full` | Payment of `message.value` to the **relay wallet** | `value = value / 1e9`, relay identity | Relay, from its CL stake | Nothing on-chain from you. **Start here.** |
+| `trustless-partial` | Nothing | `value = value / 1e9`, **your** identity | You, from your CL builder stake | A Gloas builder deposit + a mapping submission pubkey → staked pubkey on our side (ask us) |
+| `native` | — | — | — | Not accepted yet |
 
 - `message.value` is in wei as before; use whole-gwei values (the on-chain bid is in gwei).
 - `message.proposer_fee_recipient` is always the proposer's announced fee recipient, also for `trustless-full` (only the payment itself goes to the relay wallet).
@@ -48,7 +48,7 @@ Devnet host: `https://relay-plataberget.ultrasound.money` (hoodi and mainnet hos
 
 ## 3. Submission format
 
-`POST /relay/v1/builder/blocks` with `Content-Type: application/json` or `application/octet-stream` (SSZ) and `Eth-Consensus-Version: gloas`. The header selects the gloas format as it selects every other fork's; without it the slot (`message.trace.slot`; first 8 LE bytes in SSZ) decides from the fork slot on. A header that disagrees with the slot is rejected. JSON rejects unknown fields.
+`POST /relay/v1/builder/blocks` with `Content-Type: application/json` or `application/octet-stream` (SSZ) and `Eth-Consensus-Version: gloas`. The header selects the Gloas format as it selects every other fork's; without it the slot (`message.trace.slot`; first 8 LE bytes in SSZ) decides from the fork slot on. A header that disagrees with the slot is rejected. JSON rejects unknown fields.
 
 ```text
 SignedBidSubmissionGloas {
@@ -69,7 +69,7 @@ SignedBidSubmissionGloas {
 }
 ```
 
-- The container, field order and signing root are helix's `SignedBidSubmissionGloas` / `GloasBidTrace`; `execution_payload` is the consensus-specs gloas `ExecutionPayload` (block access list and slot number inside).
+- The container, field order and signing root are helix's `SignedBidSubmissionGloas` / `GloasBidTrace`; `execution_payload` is the consensus-specs Gloas `ExecutionPayload` (block access list and slot number inside).
 - `signature` is the builder-domain signature (`DOMAIN_APPLICATION_BUILDER`, genesis fork version, as pre-ePBS) over `hash_tree_root(message)`, i.e. over `trace` *and* `parent_block_root`, not over the bid trace alone.
 - `execution_payload.slot_number` must equal `message.trace.slot`.
 - `message.parent_block_root` must match the payload attributes our beacon nodes announced for `(slot, parent_hash)`; after an empty slot `(slot, parent_hash)` alone no longer identifies the block, which is why it is signed.
@@ -92,34 +92,34 @@ SignedBidSubmissionGloas {
 
 | Status / message | Meaning |
 |----------------------------------------------|------------------------------------|
-| 400 `invalid x-bid-type header, expected one of: ...` | not one of the four types |
+| 400 `invalid x-bid-type header, expected one of: ...` | Not one of the four types |
 | 400 `bid type not supported yet` | `native` |
-| 400 `mergeable submissions are not supported for gloas slots` | drop `X-Mergeable` |
+| 400 `mergeable submissions are not supported for gloas slots` | Drop `X-Mergeable` |
 | 401 `dehydrated submissions require an api token` | `X-Hydrate` without `X-Api-Token` |
 | 400 `adjustable submissions must be trusted bids, got ...` | `?adjustments=1` on a trustless bid |
-| 400 `invalid eth-consensus-version header. expected one of: ...` | unknown `Eth-Consensus-Version` |
+| 400 `invalid eth-consensus-version header. expected one of: ...` | Unknown `Eth-Consensus-Version` |
 | 400 `gloas submissions are not enabled` | `gloas` header on a relay without the fork configured |
-| 400 `invalid block submission version, expected gloas` (or `expected fulu`) | `Eth-Consensus-Version` disagrees with the slot: pre-gloas header on a gloas slot, or `gloas` before the fork |
-| 400 `failed to parse gloas json/ssz payload: ...` | shape error; JSON rejects unknown fields |
+| 400 `invalid block submission version, expected gloas` (or `expected fulu`) | `Eth-Consensus-Version` disagrees with the slot: pre-Gloas header on a Gloas slot, or `gloas` before the fork |
+| 400 `failed to parse gloas json/ssz payload: ...` | Shape error; JSON rejects unknown fields |
 | 400 `slot_number N does not match message.slot M` | `execution_payload.slot_number` disagrees with `message.trace.slot` |
-| 400 `signature verification failed` | signature not over `hash_tree_root(message)` (trace + `parent_block_root`) |
+| 400 `signature verification failed` | Signature not over `hash_tree_root(message)` (trace + `parent_block_root`) |
 | 400 `blob bodies are required` / `expected 128 cell proofs per blob` | |
-| 400 `unknown parent beacon block root` | not the root announced for `(slot, parent_hash)` |
-| 400 `could not find slot duty` / `proposer pubkey does not match slot duty` / `fee recipient mismatch` | lookahead mismatch |
-| 400 `no proposer preferences for slot` | proposer never published preferences |
-| 400 `proposer does not accept trusted bids` | trusted bid, proposer without execution-payment cap |
+| 400 `unknown parent beacon block root` | Not the root announced for `(slot, parent_hash)` |
+| 400 `could not find slot duty` / `proposer pubkey does not match slot duty` / `fee recipient mismatch` | Lookahead mismatch |
+| 400 `no proposer preferences for slot` | Proposer never published preferences |
+| 400 `proposer does not accept trusted bids` | Trusted bid, proposer without execution-payment cap |
 | 400 `bid value exceeds relay available stake` | `trustless-full` above our spendable stake net of in-flight bids |
 | 400 `no gloas wallet mapped for builder` / `mapped gloas wallet not active` / `bid value exceeds spendable stake` | `trustless-partial` without (sufficient) mapped stake |
-| 400 `submission for past slot` / `already using a newer payload` | too late / superseded |
-| 400 `<simulator message>` | simulation failed: payment, gas limit, block access list hash, state root, ... |
-| 401 `invalid api token` | unknown `X-Api-Token` |
-| 429 | rate limit (see §1) |
-| 500 | relay-side error; retry, tell us if persistent |
+| 400 `submission for past slot` / `already using a newer payload` | Too late / superseded |
+| 400 `<simulator message>` | Simulation failed: payment, gas limit, block access list hash, state root, ... |
+| 401 `invalid api token` | Unknown `X-Api-Token` |
+| 429 | Rate limit (see §1) |
+| 500 | Relay-side error; retry, tell us if persistent |
 
 ## 6. Checking what happened
 
 - `builder_blocks_received?slot=N` (or `?builder_pubkey=...`): your submissions, simulation outcome, received timestamps.
-- Wins: the beacon block's `signed_execution_payload_bid` (builder index 12057 = ultra sound on devnet) and the revealed payload, e.g. on [Dora](https://dora.glamsterdam-devnet-8.ethpandaops.io). `proposer_payload_delivered` is not yet populated for gloas reveals.
+- Wins: the beacon block's `signed_execution_payload_bid` (builder index 12057 = Ultra Sound on devnet) and the revealed payload, e.g. on [Dora](https://dora.glamsterdam-devnet-8.ethpandaops.io). `proposer_payload_delivered` is not yet populated for Gloas reveals.
 
 ## 7. Not supported yet, in planned order
 
@@ -133,12 +133,12 @@ SignedBidSubmissionGloas {
 |---|---|
 | Relay | `https://relay-plataberget.ultrasound.money` |
 | Chain id | `7091047534` |
-| Gloas fork | epoch 1536 = slot `49152` |
+| Gloas fork | Epoch 1536 = slot `49152` |
 | Gas limit | 200M, announced per proposer in the lookahead |
 | Config / checkpoint / explorer | https://config.glamsterdam-devnet-8.ethpandaops.io · https://checkpoint-sync.glamsterdam-devnet-8.ethpandaops.io · https://dora.glamsterdam-devnet-8.ethpandaops.io |
 | Clients | `ethpandaops/{reth,lighthouse}:glamsterdam-devnet-8` |
 
-1. Point your builder at the relay host with your hoodi `X-Api-Token`.
+1. Point your builder at the relay host with your Hoodi `X-Api-Token`.
 2. Submit `trustless-full` bids: pay `message.value` to the relay wallet in the last tx, keep `proposer_fee_recipient` as announced.
 3. Watch `builder_blocks_received` and Dora. Roughly 1 in 16–20 slots has a proposer that pulls bids over the builder API; the rest are decided on p2p, where our test builder competes with lowball bids.
 4. Ask us for optimistic status, a pubkey mapping (`trustless-partial`) or an adjustment wallet (`trusted` + adjustments) when you want those paths.

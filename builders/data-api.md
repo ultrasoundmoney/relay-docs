@@ -1,6 +1,6 @@
-# data api
+# Data API
 
-data api is available both local, through builder subdomains as found in [builder-getting-started.md](builder-getting-started.md), and global, through the relay-analytics. block submissions and their adjusted counterparts are available locally and are aggregated with some delay into a single, global, relay-analytics view. all other relay data api resources only exist globally.
+The data API is available both local, through builder subdomains as found in [builder-getting-started.md](builder-getting-started.md), and global, through the relay-analytics. Block submissions and their adjusted counterparts are available locally and are aggregated with some delay into a single, global, relay-analytics view. All other relay data API resources only exist globally.
 
 ```bash
 # eg local rbx
@@ -14,19 +14,19 @@ For bid submission records such as `builder_blocks_received`, `timestamp`, `time
 
 ## /relay/v1/data/bidtraces/builder_blocks_received
 
-replicates [getReceivedBids](https://flashbots.github.io/relay-specs/#/Data/getReceivedBids) from the relay specs.
+Replicates [getReceivedBids](https://flashbots.github.io/relay-specs/#/Data/getReceivedBids) from the relay specs.
 
-query parameters, at least one of the filters is required:
+Query parameters, at least one of the filters is required:
 
-| parameter | description |
+| Parameter | Description |
 |---|---|
-| `slot` | a specific slot |
-| `block_hash` | a specific block hash |
-| `block_number` | a specific execution block number |
-| `builder_pubkey` | all submissions from one builder pubkey |
-| `limit` | max rows returned, default and maximum 500. only applies when filtering by `builder_pubkey` alone; slot, hash and number queries return all matching rows |
+| `slot` | A specific slot |
+| `block_hash` | A specific block hash |
+| `block_number` | A specific execution block number |
+| `builder_pubkey` | All submissions from one builder pubkey |
+| `limit` | Max rows returned, default and maximum 500. Only applies when filtering by `builder_pubkey` alone; slot, hash and number queries return all matching rows |
 
-results are ordered by slot descending, most recently inserted first. `optimistic_submission` is not part of the spec schema; it is a de-facto extension also returned by the flashbots relay, which our response matches key-for-key.
+Results are ordered by slot descending, most recently inserted first. `optimistic_submission` is not part of the spec schema; it is a de-facto extension also returned by the Flashbots relay, which our response matches key-for-key.
 
 ```json
 [
@@ -51,11 +51,11 @@ results are ordered by slot descending, most recently inserted first. `optimisti
 
 ## /relay/v2/data/bidtraces/builder_blocks_received
 
-identical to v1, same hosts, same query parameters, same semantics, with one added response field:
+Identical to v1, same hosts, same query parameters, same semantics, with one added response field:
 
-| field | description |
+| Field | Description |
 |---|---|
-| `timestamp_ns` | nanosecond unix timestamp of when the relay received the bid submission. same instant `timestamp` and `timestamp_ms` truncate. `null` for submissions recorded before the field existed |
+| `timestamp_ns` | Nanosecond unix timestamp of when the relay received the bid submission. Same instant `timestamp` and `timestamp_ms` truncate. `null` for submissions recorded before the field existed |
 
 ```json
 [
@@ -70,27 +70,27 @@ identical to v1, same hosts, same query parameters, same semantics, with one add
 ]
 ```
 
-the v2 api is not part of the relay specs and has not stabilized yet; we may make further changes to it.
+The v2 API is not part of the relay specs and has not stabilized yet; we may make further changes to it.
 
 ## /relay/v1/data/bidtraces/proposer_payload_delivered
 
-replicates [getDeliveredPayloads](https://flashbots.github.io/relay-specs/#/Data/getDeliveredPayloads) from the relay specs.
+Replicates [getDeliveredPayloads](https://flashbots.github.io/relay-specs/#/Data/getDeliveredPayloads) from the relay specs.
 
 ## /relay/v1/data/validator_registration
 
-replicates [getValidatorRegistration](https://flashbots.github.io/relay-specs/#/Data/getValidatorRegistration) from the relay specs.
+Replicates [getValidatorRegistration](https://flashbots.github.io/relay-specs/#/Data/getValidatorRegistration) from the relay specs.
 
 ## /ultrasound/v1/data/registration
 
-when a proposer registration was last received. complements the standard `validator_registration` endpoint, which does not expose the receive time of repeated identical registrations. see [recent-registration.md](recent-registration.md).
+When a proposer registration was last received. Complements the standard `validator_registration` endpoint, which does not expose the receive time of repeated identical registrations. See [recent-registration.md](recent-registration.md).
 
 ## /ultrasound/v1/data/adjustments
 
-non-standard. pre-adjustment values for adjusted bids. see [bid-adjustment.md](bid-adjustment.md).
+Non-standard. Pre-adjustment values for adjusted bids. See [bid-adjustment.md](bid-adjustment.md).
 
 ## /ultrasound/v1/data/disallow
 
-non-standard. the ofac disallow list the relay currently filters against, as a json array of execution addresses. takes no parameters.
+Non-standard. The OFAC disallow list the relay currently filters against, as a JSON array of execution addresses. Takes no parameters.
 
 ```json
 ["0x098B716B8Aaf21512996dC57EB0615e2383E2f96", "0xa0e1c89Ef1a489c9C7dE96311eD5Ce5D32c20E4B", "..."]
@@ -98,27 +98,27 @@ non-standard. the ofac disallow list the relay currently filters against, as a j
 
 ## /relay/v1/data/merged_blocks
 
-not part of the relay specs. block merging results for a single slot, matching the shape titan serves at the same path.
+Not part of the relay specs. Block merging results for a single slot, matching the shape Titan serves at the same path.
 
-| parameter | description |
+| Parameter | Description |
 |---|---|
-| `slot` | required, a specific slot |
+| `slot` | Required, a specific slot |
 
-returns one entry per merged block we built for that slot, not only the one delivered, ordered by `proposer_value` descending. slots we did not merge return `[]`.
+Returns one entry per merged block we built for that slot, not only the one delivered, ordered by `proposer_value` descending. Slots we did not merge return `[]`.
 
-| field | description |
+| Field | Description |
 |---|---|
-| `original_block_hash` | hash of the base block before merging |
-| `block_hash` | hash of the resulting merged block |
-| `original_value` | value of the base block before merging |
-| `proposer_value` | value paid to the proposer for the merged block |
-| `total_merged_value` | value added by the merged in orders, the sum of every `contribution` |
-| `base_builder_revenue` | the base block builder's share of the merged value |
-| `relay_revenue` | the relay's share of the merged value |
-| `original_tx_count`, `merged_tx_count` | transaction count before and after merging |
-| `original_blob_count`, `merged_blob_count` | blob count before and after merging |
-| `original_gas_used`, `merged_gas_used` | gas used before and after merging |
-| `builder_inclusions` | contributing builders, keyed by coinbase. `contribution` is the value they added, `revenue` their share of it, `txs` the transaction hashes appended to the base block |
+| `original_block_hash` | Hash of the base block before merging |
+| `block_hash` | Hash of the resulting merged block |
+| `original_value` | Value of the base block before merging |
+| `proposer_value` | Value paid to the proposer for the merged block |
+| `total_merged_value` | Value added by the merged in orders, the sum of every `contribution` |
+| `base_builder_revenue` | The base block builder's share of the merged value |
+| `relay_revenue` | The relay's share of the merged value |
+| `original_tx_count`, `merged_tx_count` | Transaction count before and after merging |
+| `original_blob_count`, `merged_blob_count` | Blob count before and after merging |
+| `original_gas_used`, `merged_gas_used` | Gas used before and after merging |
+| `builder_inclusions` | Contributing builders, keyed by coinbase. `contribution` is the value they added, `revenue` their share of it, `txs` the transaction hashes appended to the base block |
 
 ```json
 [
@@ -154,29 +154,29 @@ returns one entry per merged block we built for that slot, not only the one deli
 
 ## /relay/v1/data/merged_txs
 
-not part of the relay specs. whether a transaction offered for merging made it into the merged block we delivered for its slot, and if not, why.
+Not part of the relay specs. Whether a transaction offered for merging made it into the merged block we delivered for its slot, and if not, why.
 
-| parameter | description |
+| Parameter | Description |
 |---|---|
-| `slot` | required, a specific slot |
-| `tx_hash` | required, the transaction hash |
+| `slot` | Required, a specific slot |
+| `tx_hash` | Required, the transaction hash |
 
-only slots where we delivered a merged block have records, and only for transactions offered as mergeable orders. the base block's own transactions, slots without a delivered merged block and transactions we never received return `404`.
+Only slots where we delivered a merged block have records, and only for transactions offered as mergeable orders. The base block's own transactions, slots without a delivered merged block and transactions we never received return `404`.
 
-| field | description |
+| Field | Description |
 |---|---|
-| `merged` | whether the transaction is in the delivered merged block |
-| `block_hash` | the delivered merged block, only when merged |
-| `base_block_hash` | the base block of the delivered merged block, only when not merged |
-| `reason` | why it was left out, only when not merged |
+| `merged` | Whether the transaction is in the delivered merged block |
+| `block_hash` | The delivered merged block, only when merged |
+| `base_block_hash` | The base block of the delivered merged block, only when not merged |
+| `reason` | Why it was left out, only when not merged |
 
-| reason | description |
+| Reason | Description |
 |---|---|
-| `zero_payment` | the order paid nothing to the block's coinbase |
-| `out_of_space` | not enough gas or blob space left in the block |
-| `replaced` | a later submission from the builder dropped this latest-only order |
-| `invalid` | the order failed simulation, for example a transaction reverted that was not allowed to. also covers transactions touching an ofac sanctioned address when the proposer filters |
-| `duplicate` | the transaction was already in the block |
+| `zero_payment` | The order paid nothing to the block's coinbase |
+| `out_of_space` | Not enough gas or blob space left in the block |
+| `replaced` | A later submission from the builder dropped this latest-only order |
+| `invalid` | The order failed simulation, for example a transaction reverted that was not allowed to. Also covers transactions touching an OFAC-sanctioned address when the proposer filters |
+| `duplicate` | The transaction was already in the block |
 
 ```json
 {
