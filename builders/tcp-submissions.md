@@ -1,6 +1,6 @@
 # TCP submissions
 
-The ultra sound relay accepts bid submissions over TCP for latency-sensitive builders. Keep one TCP connection open per builder pubkey and stream submissions over it.
+The Ultra Sound relay accepts bid submissions over TCP for latency-sensitive builders. Keep one TCP connection open per builder pubkey and stream submissions over it.
 
 TCP submissions support everything HTTP does except non-cancellable bids, plus compact v2 dehydrated submissions and merging data. We recommend v2: it is fewer bytes to send for your builder and fewer to process for our relay.
 
@@ -12,9 +12,9 @@ TCP submissions support everything HTTP does except non-cancellable bids, plus c
 
 ## Getting started
 
-We expect to charge $3,000/month for dedicated TCP access, but you're welcome to try it for free. Contact us on telegram to get started.
+We expect to charge $3,000/month for dedicated TCP access, but you're welcome to try it for free. Contact us on Telegram to get started.
 
-1. Ask us on telegram for an API key and connection details. The API key is a UUID, separate from your HTTP `X-Api-Token`.
+1. Ask us on Telegram for an API key and connection details. The API key is a UUID, separate from your HTTP `X-Api-Token`.
 2. Send a registration frame with your API key and pubkey.
 3. Stream submissions, and read the responses as they come back.
 
@@ -22,20 +22,20 @@ We expect to charge $3,000/month for dedicated TCP access, but you're welcome to
 
 Everything on the connection, in both directions, is a frame:
 
-| bytes | field | encoding |
+| Bytes | Field | Encoding |
 | --- | --- | --- |
-| 4 | payload length | little-endian u32 |
-| 8 | send time, nanoseconds since the unix epoch | little-endian u64 |
-| n | payload | |
+| 4 | Payload length | Little-endian u32 |
+| 8 | Send time, nanoseconds since the unix epoch | Little-endian u64 |
+| N | Payload | |
 
 ## Registration
 
 The first frame must be a registration. The payload is SSZ, 64 bytes:
 
-| bytes | field |
+| Bytes | Field |
 | --- | --- |
 | 16 | API key, the raw bytes of the UUID |
-| 48 | builder BLS pubkey |
+| 48 | Builder BLS pubkey |
 
 The pubkey must be one of yours. If the API key or the pubkey does not check out, we close the connection. All submissions on the connection must be for the registered pubkey.
 
@@ -43,11 +43,11 @@ The pubkey must be one of yours. If the API key or the pubkey does not check out
 
 A submission payload is a 6-byte header followed by the SSZ body.
 
-| bytes | field | encoding |
+| Bytes | Field | Encoding |
 | --- | --- | --- |
-| 4 | sequence number | big-endian u32 |
-| 1 | merge type | `0` none, `1` mergeable, `2` append only |
-| 1 | flags | bitmask, see below |
+| 4 | Sequence number | Big-endian u32 |
+| 1 | Merge type | `0` none, `1` mergeable, `2` append only |
+| 1 | Flags | Bitmask, see below |
 
 **Sequence number.** Increase it with every submission in a slot. A new bid replaces your current one only if its sequence number is higher.
 
@@ -55,14 +55,14 @@ A submission payload is a 6-byte header followed by the SSZ body.
 
 **Flags.**
 
-| bit | flag | meaning |
+| Bit | Flag | Meaning |
 | --- | --- | --- |
-| 0 | `IS_DEHYDRATED` | body is a v1 dehydrated submission, the same format as HTTP with `x-hydrate`, see [builder-getting-started.md](builder-getting-started.md) |
-| 1 | `WITH_ADJUSTMENTS` | body carries adjustment data, see [bid-adjustment.md](bid-adjustment.md) |
-| 2 | `ZSTD_COMPRESSED` | body is zstd compressed |
-| 3 | `PESSIMISTIC` | ignored |
-| 4 | `DEHYDRATED_V2` | body is a v2 dehydrated submission |
-| 5 | `MERGING_V2` | merging data is v2, needs merge type `1` |
+| 0 | `IS_DEHYDRATED` | Body is a v1 dehydrated submission, the same format as HTTP with `x-hydrate`, see [builder-getting-started.md](builder-getting-started.md) |
+| 1 | `WITH_ADJUSTMENTS` | Body carries adjustment data, see [bid-adjustment.md](bid-adjustment.md) |
+| 2 | `ZSTD_COMPRESSED` | Body is zstd compressed |
+| 3 | `PESSIMISTIC` | Ignored |
+| 4 | `DEHYDRATED_V2` | Body is a v2 dehydrated submission |
+| 5 | `MERGING_V2` | Merging data is v2, needs merge type `1` |
 
 **Body.** SSZ:
 
@@ -100,9 +100,9 @@ struct DehydratedBlobsBundleV2 {
 
 Keys are 64-bit FxHash values:
 
-- transaction: FxHash of its last 67 bytes, the same key as in v1 dehydrated submissions.
-- blob: FxHash of its KZG commitment.
-- withdrawals list: FxHash over each withdrawal's index, validator index, address and amount, in order.
+- Transaction: FxHash of its last 67 bytes, the same key as in v1 dehydrated submissions.
+- Blob: FxHash of its KZG commitment.
+- Withdrawals list: FxHash over each withdrawal's index, validator index, address and amount, in order.
 
 We cache per slot and per builder pubkey, and the cache is shared with your HTTP dehydrated submissions. Frames on a connection are processed in the order they arrive, so a submission can refer to items sent in the frame right before it.
 
@@ -142,12 +142,12 @@ Without `MERGING_V2` we expect the [v1 merging data](https://docs.blockspace.for
 
 Every submission frame gets one response frame. The payload is SSZ:
 
-| field | type |
+| Field | Type |
 | --- | --- |
-| sequence number | u32 |
-| request id | 16 bytes UUID |
-| status | u8: `0` ok, `1` invalid request, `2` internal error |
-| error message | UTF-8 bytes |
+| Sequence number | u32 |
+| Request id | 16 bytes UUID |
+| Status | u8: `0` ok, `1` invalid request, `2` internal error |
+| Error message | UTF-8 bytes |
 
 With status `0` the error message is empty, except for a bid below the floor, which gets `accepted bid below floor, skipped validation`, the same text as the HTTP 202. That bid is not simulated and does not enter the auction, see [floor-bid.md](floor-bid.md). With status `1` or `2` it is the same message as the HTTP 4xx or 5xx.
 

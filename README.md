@@ -1,15 +1,15 @@
-# ultra sound relay docs
+# Ultra Sound relay docs
 
-documentation for the [ultra sound relay](https://relay.ultrasound.money).
+Documentation for the [Ultra Sound relay](https://relay.ultrasound.money).
 
-- **[proposers](proposers/)** — operating proposers and connecting them to the relay to receive higher-paying blocks.
-- **[builders](builders/)** — submitting blocks: URLs, auction details, optimistic relaying, bid adjustments, websockets, rate limits.
-- **[searchers](searchers/)** — fast access to live ethereum data.
-- **[researchers](researchers/)** — accessing relay data without proposing or building.
-- **[ePBS](epbs/)** — ultra sound's [post-ePBS view](epbs/post-epbs.md) on the block building pipeline, the [Gloas builder auction](epbs/builder-auction.md) and the [Gloas builder API](epbs/gloas-builder-api.md).
+- **[Proposers](proposers/)** — operating proposers and connecting them to the relay to receive higher-paying blocks.
+- **[Builders](builders/)** — submitting blocks: URLs, auction details, optimistic relaying, bid adjustments, websockets, rate limits.
+- **[Searchers](searchers/)** — fast access to live Ethereum data.
+- **[Researchers](researchers/)** — accessing relay data without proposing or building.
+- **[ePBS](epbs/)** — Ultra Sound's [post-ePBS view](epbs/post-epbs.md) on the block building pipeline, the [Gloas builder auction](epbs/builder-auction.md) and the [Gloas builder API](epbs/gloas-builder-api.md).
 
-## questions?
+## Questions?
 
-talk to us on telegram: **[@ultrasoundrelay](https://t.me/ultrasoundrelay)**.
+Talk to us on Telegram: **[@ultrasoundrelay](https://t.me/ultrasoundrelay)**.
 
-or email [contact@ultrasound.money](mailto:contact@ultrasound.money).
+Or email [contact@ultrasound.money](mailto:contact@ultrasound.money).

@@ -1,4 +1,4 @@
-# top bid websocket
+# Top bid websocket
 
 Provides a stream of updates of the auction's current top bid. We run multiple auctions globally and forward top bids between them (see [bid-forwarding.md](bid-forwarding.md)). Two versions are available, we recommend using v2.
 

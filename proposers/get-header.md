@@ -18,7 +18,7 @@ All 4xx responses have JSON bodies with a message explaining the same as written
 
 Our relay expects the proposer to call once, wait for a reply as long as they're comfortable, then either
 
-1. hit a deadline and use the best bid they do have
-2. receive all replies early and select the best of those.
+1. Hit a deadline and use the best bid they do have
+2. Receive all replies early and select the best of those.
 
 Both mev-boost and Vouch interact well, by default, with the above, albeit sub-optimally. If you prefer non-default behavior, or want more optimal bid requesting behavior, we're flexible–please come talk to us so we can collaborate.
