@@ -5,7 +5,7 @@ An onboarding guide for builders interested in low-latency optimistic relaying w
 **TLDR**
 
 1. Share with us over Telegram or Discord the list of builder pubkeys you want promoted for optimistic relaying. We will manually review recent bid submissions from those pubkeys to ensure a low historical rate of bad bids. A bad bid is one with an invalid block or an insufficient payment to the proposer.
-2. Post a maximum of 64 stETH collateral to `relay.ultrasound.eth` and share the transaction details with us. The transaction sender must be an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address.
+2. Post stETH collateral to `relay.ultrasound.eth` and share the transaction details with us. The transaction sender must be an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address.
 3. The relay will automatically demote you for submitting a single bad bid to the relay. You will only be re-promoted after the underlying reason for submitting a bad bid is addressed.
 4. A bad bid that wins the auction and is signed by the proposer will cause an on-chain incident, i.e. a missed slot or an insufficient proposer payment. We expect you to directly compensate the proposer per [missed slot reimbursement](../proposers/missed-slot-reimbursement.md) — the bid value plus the estimated missed CL proposer reward — within 48 hours and send us the transaction details.
 5. Without receiving proof the proposer was compensated within 48 hours we may use your collateral to compensate the proposer ourselves.
@@ -39,7 +39,7 @@ Pubkey `0xcccccc` also has 0.99 ETH of collateral but `is_optimistic` is `false`
 
 ### Collateral
 
-Collateral for optimistic relaying must be posted to `relay.ultrasound.eth` from an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address. The maximum collateral per pubkey is currently 64 stETH—this value may be increased or decreased from time to time. The stETH reward paid by Lido is kept by Ultra Sound to fund the relay. If you prefer to send ETH, we reserve the right to stake and return your collateral 1:1, as stETH. Please contact us if you wish to stop optimistic relaying and have your collateral returned.
+Collateral for optimistic relaying must be posted to `relay.ultrasound.eth` from an address publicly associated with one of your builder pubkeys, ideally your primary fee recipient address. The stETH reward paid by Lido is kept by Ultra Sound to fund the relay. If you prefer to send ETH, we reserve the right to stake and return your collateral 1:1, as stETH. Please contact us if you wish to stop optimistic relaying and have your collateral returned.
 
 ### Builder ID
 
