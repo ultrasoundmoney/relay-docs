@@ -19,7 +19,7 @@ Devnet host: `https://relay-plataberget.ultrasound.money` (Hoodi and mainnet hos
 
 - `X-Api-Token`: your existing token; on the devnet your **Hoodi** token works. Authenticated: 120 MiB of submissions per slot. Without a token: 50 requests/min per IP, attributed to builder `unknown`.
 - Unknown builder pubkeys are accepted (no allowlist) and treated as non-optimistic.
-- Optional headers as before: `X-Sequence` (monotonic per slot); `X-Hydrate` (dehydrated submissions, needs `X-Api-Token`) is available on the devnet, format on request while it settles; `X-Mergeable` is **not** supported on gloas slots (400).
+- Optional headers as before: `X-Sequence` (monotonic per slot); `X-Hydrate` (dehydrated submissions, needs `X-Api-Token`, see [§3](#dehydrated-submissions-x-hydrate)); `X-Mergeable` is **not** supported on gloas slots (400).
 
 ## 2. Bid types and payment
 
@@ -75,6 +75,40 @@ SignedBidSubmissionGloas {
 - `message.parent_block_root` must match the payload attributes our beacon nodes announced for `(slot, parent_hash)`; after an empty slot `(slot, parent_hash)` alone no longer identifies the block, which is why it is signed.
 - The block access list is validated by execution: the simulator rebuilds it and compares hashes.
 
+### Dehydrated submissions (`X-Hydrate`)
+
+Send `X-Hydrate: true` with your `X-Api-Token` to reference transactions, blobs and block access list entries already sent in the same slot. The container is the one above with a dehydrated `execution_payload` and `blobs_bundle`; SSZ or JSON, `?adjustments=1` appends `adjustment_data` as usual.
+
+```text
+DehydratedSignedBidSubmissionGloas {
+  message:              GloasBidTrace               // as above
+  execution_payload:    DehydratedExecutionPayload  // the gloas payload, except:
+                                                    //   transactions: each full bytes, or its
+                                                    //     8-byte key (see below)
+                                                    //   block_access_list: DehydratedBlockAccessList
+  blobs_bundle:         DehydratedBlobsBundle
+  execution_requests:   ExecutionRequests
+  signature:            BLS                         // over hash_tree_root(message), as above
+}
+
+DehydratedBlockAccessList {
+  refs:       List[bytes32]  // keccak256 of each raw RLP AccountChanges item, in list order
+  new_items:  List[bytes]    // the raw items not sent yet this slot, in the same order
+}
+
+DehydratedBlobsBundle {
+  commitments:  List[KzgCommitment]  // every blob of the block
+  new_items:    List[BlobItem]       // blobs not sent yet: {proof: List[KzgProof] (128 cell
+                                     // proofs), commitment, blob}
+}
+```
+
+- Transactions and blobs work as pre-ePBS [block deltas](../builders/builder-getting-started.md#block-deltas): a transaction's key is the FxHash (`u64`, little-endian) of its last 67 bytes; transactions shorter than 67 bytes are rejected. The gloas container has no `tx_root`.
+- Block access list: split your EL's `blockAccessList` into its top-level RLP items, send `refs` for all of them and the bytes of the unseen ones in `new_items`. The relay reassembles `rlp_list(items in refs order)` byte-exactly, so the hash matches the payload's `block_access_list_hash`; it does not re-sort.
+- Keep a per-slot set of what you sent (transaction keys, blob commitments, item hashes); clear it on a new slot. The relay caches per builder pubkey for the current and previous slot; the pubkey must belong to your token.
+- Items are keyed by content, which includes block access indices: changing only the trailing payment transaction re-sends a few accounts, inserting or reordering transactions re-sends every account touched after the change.
+- On a 400 `hydration: unknown …` (cache miss, e.g. after a relay restart): clear your set and resend the submission in full. Everything sent in full in the rejected submission is cached anyway.
+
 ### Adjustments
 
 `?adjustments=1` with an `adjustment_data` object as the last field, exactly as in [bid adjustment](../builders/bid-adjustment.md): same placeholder (last tx, payment forwarder call, full bid in `value`), same proofs. Trusted bids only; trustless bids need no data and are adjusted by lowering the on-chain value. The relay rebuilds the adjusted block itself, including the block access list and the EIP-7708 transfer logs — nothing new for you to provide. Accounting is unchanged (50/50 of the landed delta).
@@ -96,6 +130,9 @@ SignedBidSubmissionGloas {
 | 400 `bid type not supported yet` | `native` |
 | 400 `mergeable submissions are not supported for gloas slots` | Drop `X-Mergeable` |
 | 401 `dehydrated submissions require an api token` | `X-Hydrate` without `X-Api-Token` |
+| 400 `hydration: unknown tx hash at index N` / `unknown blob commitment … at index N` / `unknown block access list entry … at index N` | Cache miss: clear what you sent, resend in full |
+| 400 `hydration: invalid tx length …` / `too many …` / `undecodable block access list: …` | Malformed dehydrated submission |
+| 400 `builder_pubkey does not match authenticated identity` | `X-Hydrate` for a pubkey not owned by your token |
 | 400 `adjustable submissions must be trusted bids, got ...` | `?adjustments=1` on a trustless bid |
 | 400 `invalid eth-consensus-version header. expected one of: ...` | Unknown `Eth-Consensus-Version` |
 | 400 `gloas submissions are not enabled` | `gloas` header on a relay without the fork configured |
