@@ -6,10 +6,10 @@ If a proposer signs a header delivered by the Ultra Sound relay and the block do
 
 ### Bid value
 
-The value of the header we delivered — the same value your sidecar logged from `getHeader`, verifiable via the [data API](../builders/data-api.md) (`proposer_payload_delivered`). How much of it we cover depends on whether anyone benefited from the failed payment:
+The value of the header we delivered — the same value your sidecar logged from `getHeader`, verifiable via the [data API](../builders/data-api.md) (`proposer_payload_delivered`). How much of it we cover depends on whether the failure was lose-lose or win-lose:
 
-- **Liveness failure** — nobody got paid, e.g. a missed slot from a bug or operational fault. Capped at 10 ETH.
-- **Foul play** — the proposer was not paid but the builder of the slot benefited anyway, e.g. by paying themselves instead of the proposer. Covered in full, up to the builder's collateral. Bids larger than a builder's collateral are simulated and verified to pay the proposer before we deliver the header.
+- **Liveness failure (lose-lose)** — the block that would have paid you did not land, e.g. a missed slot from a bug or operational fault. Nobody wins. Capped at 10 ETH.
+- **Foul play (win-lose)** — the builder intentionally did not pay what their bid promised, e.g. by paying themselves instead. Covered in full: from the builder's collateral for bids up to the amount they posted, and by simulation before we deliver the header for anything above it.
 
 See [on-chain incidents](../builders/optimistic-relaying-builder-guide.md#on-chain-incidents) for detail.
 
@@ -24,7 +24,7 @@ As of mid-2026 this component typically comes to ~0.05 ETH.
 
 ### Insufficient proposer payment
 
-If a bad block lands on chain with a short proposer payment (instead of a missed slot), no CL reward was lost — reimbursement is the payment shortfall. The same distinction applies: if the shortfall went to the builder it is foul play, otherwise a liveness failure.
+If a bad block lands on chain with a short proposer payment (instead of a missed slot), no CL reward was lost — reimbursement is the payment shortfall. The same distinction applies: a shortfall the builder intended, e.g. paying themselves, is foul play; otherwise it is a liveness failure.
 
 ### Payment
 
