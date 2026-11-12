@@ -53,10 +53,14 @@ When a bad bid is submitted, even if the bid does not get signed by the proposer
 
 ### On-chain incidents
 
-Optimistic relaying means a bad block can occasionally make it on-chain. When that happens Ultra Sound aims to help resolve the incident, with how much we cover depending on the cause:
+Optimistic relaying means a bad block can occasionally make it on-chain, or a slot can be missed. When a proposer signs a header we delivered but does not receive the promised payment, how much we cover depends on whether the failure was lose-lose or win-lose:
 
-- **Foul play** — e.g. a builder paying themselves instead of the proposer in the last transaction, a safety fault. We will use the builder's collateral to compensate the proposer in full.
-- **Liveness failure** — no foul play, a rare bug or operational fault. We aim to compensate proposers up to 10 ETH of bid value on a best-effort basis. We hold ourselves to the same standard for liveness failures on our own side.
+- **Liveness failure (lose-lose)** — a bid was promised, but the block that would have paid the proposer and earned the builder a profit did not land, e.g. a missed slot from a bug, an operational fault or a payload that could not be delivered in time. Nobody wins. These are rare and happen despite everyone's best intentions. The builder or relay at fault compensates the proposer up to 10 ETH of bid value. No software system is 100% reliable, and proposers pay nothing for this coverage. We hold ourselves to the same standard on our own side.
+- **Foul play (win-lose)** — a builder intentionally does not pay the proposer what their bid promised, e.g. by paying themselves instead. We compensate the proposer in full: from the builder's collateral for bids up to the amount they posted, and by simulation for anything above it.
+
+Bids are only relayed optimistically when their value is at most the builder's collateral. For any larger bid we simulate the block and verify it pays the proposer before handing out the header, so the value a builder can take through foul play is always covered by their collateral.
+
+These categories are deliberately broad, and telling them apart is a judgment call. We judge each incident on its own facts, so a new way of shorting a proposer doesn't escape being treated as foul play just because it's new.
 
 When the builder's collateral is in scope we ask the builder to send ETH directly to the proposer's fee recipient and share the transaction with us. If we don't receive that proof within 48 hours we may use the collateral to compensate the proposer ourselves.
 
