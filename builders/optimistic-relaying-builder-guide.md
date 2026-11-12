@@ -53,10 +53,12 @@ When a bad bid is submitted, even if the bid does not get signed by the proposer
 
 ### On-chain incidents
 
-Optimistic relaying means a bad block can occasionally make it on-chain. When that happens Ultra Sound aims to help resolve the incident, with how much we cover depending on the cause:
+Optimistic relaying means a bad block can occasionally make it on-chain, or a slot can be missed. When a proposer signs a header we delivered but does not receive the promised payment, the question that decides how much we cover is: did the builder of the slot benefit anyway?
 
-- **Foul play** — e.g. a builder paying themselves instead of the proposer in the last transaction, a safety fault. We will use the builder's collateral to compensate the proposer in full.
-- **Liveness failure** — no foul play, a rare bug or operational fault. We aim to compensate proposers up to 10 ETH of bid value on a best-effort basis. We hold ourselves to the same standard for liveness failures on our own side.
+- **Liveness failure** — nobody got paid. The proposer did not receive the bid, and neither the builder nor anyone else captured its value. The typical case is a missed slot, e.g. from a bug, an operational fault or a payload that could not be delivered in time. We compensate the proposer up to 10 ETH of bid value. No software system is 100% reliable, and proposers pay nothing for this coverage. We hold ourselves to the same standard for liveness failures on our own side.
+- **Foul play** — the proposer was not paid, but the builder of the slot benefited anyway, e.g. a block that lands on-chain with the builder paying themselves instead of the proposer. We compensate the proposer in full, up to the builder's collateral.
+
+Bids are only relayed optimistically when their value is at most the builder's collateral. For any larger bid we simulate the block and verify it pays the proposer before handing out the header, so the value a builder can take through foul play is always covered by their collateral.
 
 When the builder's collateral is in scope we ask the builder to send ETH directly to the proposer's fee recipient and share the transaction with us. If we don't receive that proof within 48 hours we may use the collateral to compensate the proposer ourselves.
 
